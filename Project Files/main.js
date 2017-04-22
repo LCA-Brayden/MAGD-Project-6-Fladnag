@@ -20,6 +20,8 @@ var fladIdle1, fladIdle2, fladConjure, walk1, walk2, walk3; //Animations
 function preLoad() {
 	//Preload animations + sprites here.
 
+	//loadAnimation(sprite); 
+
 	heyListen();
 }
 
@@ -124,10 +126,15 @@ function gameMouse() { //Contains all mouse control functions.
 	}
 }
 
+function animate(toAnim) { // Display animation on demand, on location. 
+	//animation(anim, x, y); 
+	animation(toAnim, x, y);
+}
+
 function heyListen() {
 	//Any Event Listeners we might want go here. 
 
-	
+
 }
 
 //Event Listener functions go here. 
@@ -166,3 +173,5 @@ function boxHit(which) { //Depending on which Walker was hit, add Walker's point
 function edgeHit(which) { //If a walker makes it to the edge of the screen (the one it doesn't start at), delete Walker. 
 
 }
+
+//Walker Functions
