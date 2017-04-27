@@ -12,12 +12,15 @@
 //Variable Initialization
 var framerate; //Settings
 var dayLength, currentTime, currentScore; //Gameplay 
-var interBox, interCount, walkerCount, walkerMax, animTracker, animCur; //Game Control Variables
+var interBox, interCount, walkerCount, walkerMax, animTracker, animCur, mouse; //Game Control Variables
 var boxLock, gameGoing, idlePlaying, conjPlaying; //Control Booleans
 var towerReg; //Regions
 var fladIdle1, fladIdle2, fladConjure, walk1, walk2, walk3; //Animations
+var walkers, boxes; // Arrays
+var backIMG;
 
 function preLoad() {
+	backIMG = loadImage("data/background.png");
 	//Preload animations + sprites here.
 
 	//loadAnimation(sprite); 
@@ -57,6 +60,7 @@ function setup() {
     walkerMax = 10; 	// Max number of NPCs on screen at once. 
     animTracker = 0.0; 	// Keeps track of idle time/tracks when to play an idle animation (in theory)
     animCur = 0; 		// Keeps track of which animation is currently playing. 
+    mouse = createVector(0, 0);
 
     //Booleans
     boxLock = false; 	// When on, prevents player from conjuring boxes. (used to prevent spam)
@@ -66,10 +70,17 @@ function setup() {
 
     //Gameplay Regions
     towerReg = createVector();
+
+    //Arrays 
+    walkers = [];
+    boxes = [];
+
+    //Functions
+    matterCheck();
 }
 
 function draw() {
-
+	background(0);
 
 	gameTimer();
 	gameControl();
@@ -117,6 +128,9 @@ function gameControl() { //Various settings for game control/balance. Stuff like
 }
 
 function gameMouse() { //Contains all mouse control functions.
+	mouse.x = mouseX; 
+	mouse.y = mouseY;
+
 	if (mouseDown && !!(mouse.x <= towerReg.x && mouse.x >= towerReg.w && //Not sure if !! is the right tool to use here, to convert this statement into a boolean. - Brayden
 					  mouse.y <= towerReg.y && mouse.y >= towerReg.h) == true) //If the mouse isn't inside of the region set aside for the tower and/or UI, do this:
 	{
@@ -126,7 +140,7 @@ function gameMouse() { //Contains all mouse control functions.
 	}
 }
 
-function animate(toAnim) { // Display animation on demand, on location. 
+function animate(toAnim, x, y) { // Display animation on demand, on location. 
 	//animation(anim, x, y); 
 	animation(toAnim, x, y);
 }
@@ -166,6 +180,10 @@ function gameEnd() { // Turns off booleans, updateSprites, and stops all countin
 }
 
 //Collision Detection functions go here. 
+function matterCheck() { //Check if Walker and Box objects can collide, make sure Matter.js is functioning properly. If not, return an error and ask for reload. 
+
+}
+
 function boxHit(which) { //Depending on which Walker was hit, add Walker's point value to the total score. 
 
 }
@@ -174,4 +192,32 @@ function edgeHit(which) { //If a walker makes it to the edge of the screen (the 
 
 }
 
-//Walker Functions
+//Walker Class/Functions
+function Walker(x, y, image) {
+	this.xPos;
+	this.shape;
+}
+
+
+/*function createWalker(walkType, walkDir) {
+	switch (walkType) {
+		case 1: 
+			walkers[walkers.length].push("walker1", "left"); //No Idea what I'm doing here. Theory is we use an array to measure how many walkers are on screen. 
+			//Draw Walker 1 Sprite/Image series, start moving along x axis at +1 or -1. 
+			break;
+		case 2: 
+			break;
+		case 3: 
+			break;
+	}
+}*/
+
+function Box() {
+	this.xPos; 
+	this.yPos;
+	this.body; //= new Body of Matter.js
+
+	function showCrate(xPos, yPos) {
+		body.show();
+	}
+}
