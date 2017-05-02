@@ -113,6 +113,7 @@ function gameControl() { //Various settings for game control/balance. Stuff like
 	}
 	//Walker Control
 		// Spawns and controls the number of Walkers on screen. Keeps track of walkerCount. 
+	
 
 	//Idle/Animation Control 
 	switch (animCur) {
@@ -134,9 +135,10 @@ function gameMouse() { //Contains all mouse control functions.
 	if (mouseDown && !!(mouse.x <= towerReg.x && mouse.x >= towerReg.w && //Not sure if !! is the right tool to use here, to convert this statement into a boolean. - Brayden
 					  mouse.y <= towerReg.y && mouse.y >= towerReg.h) == true) //If the mouse isn't inside of the region set aside for the tower and/or UI, do this:
 	{
-		//Create box at mouse.x & mouse.y. 
+		//createBox(mouse, boxType); <- Need to arrange a random generator for which box will be passed. 
 		//Wait for 0.5 seconds
 		//Then turn on gravity
+		boxLock = true;
 	}
 }
 
@@ -194,25 +196,16 @@ function edgeHit(which) { //If a walker makes it to the edge of the screen (the 
 
 //Walker Class/Functions
 function Walker(x, y, image) {
-	this.xPos;
-	this.shape;
+	this.xPos = x;
+	this.yPos = y;
+	this.body; //= new Body of Matter.js
 }
 
+function createWalker(walkType, walkDir) {
+	walkers[walkers.length].push(new Walker(walkDir.x, walkDir.y, walkType));
+}
 
-/*function createWalker(walkType, walkDir) {
-	switch (walkType) {
-		case 1: 
-			walkers[walkers.length].push("walker1", "left"); //No Idea what I'm doing here. Theory is we use an array to measure how many walkers are on screen. 
-			//Draw Walker 1 Sprite/Image series, start moving along x axis at +1 or -1. 
-			break;
-		case 2: 
-			break;
-		case 3: 
-			break;
-	}
-}*/
-
-function Box() {
+function Box(x, y, image) {
 	this.xPos; 
 	this.yPos;
 	this.body; //= new Body of Matter.js
@@ -220,4 +213,8 @@ function Box() {
 	function showCrate(xPos, yPos) {
 		body.show();
 	}
+}
+
+function createBox(boxPos, boxType) {
+	boxes[boxes.length].push(new Box(boxPos.x, boxPos.y, boxType));
 }
