@@ -21,17 +21,15 @@ var backIMG;
 
 var engine; //Matter.js Variables
 var world;
-var boxes = [];
 var ground;
+var options;
 var Engine = Matter.Engine,
-  World = Matter.World,
-  Bodies = Matter.Bodies;   // end of matter.js Variables
+World = Matter.World,
+Bodies = Matter.Bodies;
 
-
-function preLoad() {
-	backIMG = loadImage("data/background.png");
+function preload() {
 	//Preload animations + sprites here.
-
+	backIMG = loadImage("data/background.png");
 	//loadAnimation(sprite);
 
 	heyListen();
@@ -88,21 +86,22 @@ function setup() {
     //Functions
     matterCheck();
 
-		engine = Engine.create();                                    //Matter.js setup
-	  world = engine.world;
-	  var options = {isStatic: true}
-	  ground = Bodies.rectangle(width/2, height, width, 100, options);
-	  World.add(world, ground);                                   //end of matter.js setup
+	engine = Engine.create();	//Matter.js setup
+	world = engine.world;
+	options = {isStatic: true}
+	ground = Bodies.rectangle(width/2, height, width, 100, options);
+	World.add(world, ground); 	//end of matter.js setup
 }
 
 function draw() {
 	background(0);
+	image(backIMG, width/2, height/2, 100, 100);
 
 	gameTimer();
 	gameControl();
 	gameMouse();
 	showboxes();
-  showWalker();
+  	showWalker();
 	boxTimer();
 
   rectMode(CENTER);
@@ -266,9 +265,13 @@ function keyPressed(){
   var check = int(random(0,2));
   console.log(check);
   if(check == 0){
-    walkers.push(new Walker(-40,height-100,40,100,1));
+  	if (walkers.length < walkerMax) {
+    	walkers.push(new Walker(-40,height-100,40,100,1));
+	}
   }
   if(check == 1){
-    walkers.push(new Walker(width+40,height-100,40,100,-1));
+  	if (walkers.length < walkerMax) {
+    	walkers.push(new Walker(width+40,height-100,40,100,-1));
+	}
   }
 }
