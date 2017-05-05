@@ -21,15 +21,17 @@ var backIMG;
 
 var engine; //Matter.js Variables
 var world;
+var boxes = [];
 var ground;
-var options;
 var Engine = Matter.Engine,
-World = Matter.World,
-Bodies = Matter.Bodies;
+  World = Matter.World,
+  Bodies = Matter.Bodies;   // end of matter.js Variables
 
-function preload() {
-	//Preload animations + sprites here.
+
+function preLoad() {
 	backIMG = loadImage("data/background.png");
+	//Preload animations + sprites here.
+
 	//loadAnimation(sprite);
 
 	heyListen();
@@ -86,26 +88,20 @@ function setup() {
     //Functions
     matterCheck();
 
-	engine = Engine.create();	//Matter.js setup
-	world = engine.world;
-	options = {isStatic: true}
-	ground = Bodies.rectangle(width/2, height, width, 100, options);
-	World.add(world, ground); 	//end of matter.js setup
+		engine = Engine.create(); //Matter.js setup
+	  world = engine.world;
+	  var options = {isStatic: true}//end of matter.js setup
 }
 
 function draw() {
 	background(0);
-	image(backIMG, width/2, height/2, 100, 100);
 
 	gameTimer();
 	gameControl();
 	gameMouse();
 	showboxes();
-  	showWalker();
+  showWalker();
 	boxTimer();
-
-  rectMode(CENTER);
-  rect(ground.position.x, ground.position.y, width, 100);
 }
 
 function gameTimer() { //Constantly count up from current time until it reaches dayLength. Then, stop the game.
@@ -133,16 +129,7 @@ function gameControl() { //Various settings for game control/balance. Stuff like
 		}
 	}
 	//Walker Control
-<<<<<<< HEAD
-<<<<<<< HEAD
 		// Spawns and controls the number of Walkers on screen. Keeps track of walkerCount.
-=======
-		// Spawns and controls the number of Walkers on screen. Keeps track of walkerCount. 
-	
->>>>>>> refs/remotes/origin/master
-=======
-		// Spawns and controls the number of Walkers on screen. Keeps track of walkerCount.
->>>>>>> origin/Henry-Dustrude
 
 	//Idle/Animation Control
 	switch (animCur) {
@@ -164,15 +151,7 @@ function gameMouse() { //Contains all mouse control functions.
 	if (mouseDown && !!(mouse.x <= towerReg.x && mouse.x >= towerReg.w && //Not sure if !! is the right tool to use here, to convert this statement into a boolean. - Brayden
 					  mouse.y <= towerReg.y && mouse.y >= towerReg.h) == true) //If the mouse isn't inside of the region set aside for the tower and/or UI, do this:
 	{
-<<<<<<< HEAD
-<<<<<<< HEAD
 		//Create box at mouse.x & mouse.y.
-=======
-		//createBox(mouse, boxType); <- Need to arrange a random generator for which box will be passed. 
->>>>>>> refs/remotes/origin/master
-=======
-		//Create box at mouse.x & mouse.y.
->>>>>>> origin/Henry-Dustrude
 		//Wait for 0.5 seconds
 		//Then turn on gravity
 	}
@@ -237,39 +216,30 @@ function Walker(x, y, image) {
 }
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> origin/Henry-Dustrude
-/*function createWalker(walkType, walkDir) {
-	switch (walkType) {
-		case 1:
-			walkers[walkers.length].push("walker1", "left"); //No Idea what I'm doing here. Theory is we use an array to measure how many walkers are on screen.
-			//Draw Walker 1 Sprite/Image series, start moving along x axis at +1 or -1.
-			break;
-		case 2:
-			break;
-		case 3:
-			break;
-	}
+/*function createWalker() {
+	var check = int(random(0,2));
+  if(check == 0){
+    walkers.push(new Walker(-20,height-50,40,100,1));
+  }
+  if(check == 1){
+    walkers.push(new Walker(width+20,height-50,40,100,-1));
+  }
 }*/
 
 function showboxes(){
 	Engine.update(engine);
+  for (var i = 0; i < boxes.length; i++) {
+    if (boxes[i].isOffScreen()) {
+      boxes[i].removeFromWorld();
+      boxes.splice(i, 1);
+      i--;
+    }
+  }
   for (var i = 0; i < boxes.length; i++)
 	{ boxes[i].show();}
   noStroke(255);
   fill(170);
 }
-<<<<<<< HEAD
-=======
-function Box(x, y, image) {
-	this.xPos; 
-	this.yPos;
-	this.body; //= new Body of Matter.js
->>>>>>> refs/remotes/origin/master
-=======
->>>>>>> origin/Henry-Dustrude
 
 function boxTimer(){
 	if(interBoxCheck > 0){
@@ -277,16 +247,20 @@ function boxTimer(){
 	}
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> origin/Henry-Dustrude
 function showWalker(){
+  for (var i = 0; i < walkers.length; i++) {
+    if (walkers[i].isOffScreen()) {
+      walkers.splice(i, 1);
+      i--;
+    }
+  }
+
   for(i = 0; i<walkers.length;i++){
     walkers[i].update();
     walkers[i].show();
   }
 }
+
 
 function mousePressed() {
 	if(interBoxCheck == 0){
@@ -297,23 +271,10 @@ function mousePressed() {
 
 function keyPressed(){
   var check = int(random(0,2));
-  console.log(check);
-  if(check == 0){
-  	if (walkers.length < walkerMax) {
-    	walkers.push(new Walker(-40,height-100,40,100,1));
-	}
-  }
-  if(check == 1){
-  	if (walkers.length < walkerMax) {
-    	walkers.push(new Walker(width+40,height-100,40,100,-1));
-	}
-  }
+ if(check == 0){
+    walkers.push(new Walker(-20,height-100,40,100,1));
+ }
+ if(check == 1){
+   walkers.push(new Walker(width+20,height-100,40,100,-1));
+ }
 }
-<<<<<<< HEAD
-=======
-function createBox(boxPos, boxType) {
-	boxes[boxes.length].push(new Box(boxPos.x, boxPos.y, boxType));
-}
->>>>>>> refs/remotes/origin/master
-=======
->>>>>>> origin/Henry-Dustrude
