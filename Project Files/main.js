@@ -134,7 +134,12 @@ function gameControl() { //Various settings for game control/balance. Stuff like
 		}
 	}
 	//Walker Control
+<<<<<<< HEAD
 		// Spawns and controls the number of Walkers on screen. Keeps track of walkerCount.
+=======
+		// Spawns and controls the number of Walkers on screen. Keeps track of walkerCount. 
+	
+>>>>>>> refs/remotes/origin/master
 
 	//Idle/Animation Control
 	switch (animCur) {
@@ -156,9 +161,14 @@ function gameMouse() { //Contains all mouse control functions.
 	if (mouseDown && !!(mouse.x <= towerReg.x && mouse.x >= towerReg.w && //Not sure if !! is the right tool to use here, to convert this statement into a boolean. - Brayden
 					  mouse.y <= towerReg.y && mouse.y >= towerReg.h) == true) //If the mouse isn't inside of the region set aside for the tower and/or UI, do this:
 	{
+<<<<<<< HEAD
 		//Create box at mouse.x & mouse.y.
+=======
+		//createBox(mouse, boxType); <- Need to arrange a random generator for which box will be passed. 
+>>>>>>> refs/remotes/origin/master
 		//Wait for 0.5 seconds
 		//Then turn on gravity
+		boxLock = true;
 	}
 }
 
@@ -216,11 +226,16 @@ function edgeHit(which) { //If a walker makes it to the edge of the screen (the 
 
 //Walker Class/Functions
 function Walker(x, y, image) {
-	this.xPos;
-	this.shape;
+	this.xPos = x;
+	this.yPos = y;
+	this.body; //= new Body of Matter.js
 }
 
+function createWalker(walkType, walkDir) {
+	walkers[walkers.length].push(new Walker(walkDir.x, walkDir.y, walkType));
+}
 
+<<<<<<< HEAD
 /*function createWalker(walkType, walkDir) {
 	switch (walkType) {
 		case 1:
@@ -241,6 +256,12 @@ function showboxes(){
   noStroke(255);
   fill(170);
 }
+=======
+function Box(x, y, image) {
+	this.xPos; 
+	this.yPos;
+	this.body; //= new Body of Matter.js
+>>>>>>> refs/remotes/origin/master
 
 function boxTimer(){
 	if(interBoxCheck > 0){
@@ -248,6 +269,7 @@ function boxTimer(){
 	}
 }
 
+<<<<<<< HEAD
 function showWalker(){
   for(i = 0; i<walkers.length;i++){
     walkers[i].update();
@@ -272,3 +294,8 @@ function keyPressed(){
     walkers.push(new Walker(width+40,height-100,40,100,-1));
   }
 }
+=======
+function createBox(boxPos, boxType) {
+	boxes[boxes.length].push(new Box(boxPos.x, boxPos.y, boxType));
+}
+>>>>>>> refs/remotes/origin/master
