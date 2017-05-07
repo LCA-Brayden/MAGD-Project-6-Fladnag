@@ -17,12 +17,13 @@ var boxLock, gameGoing, idlePlaying, conjPlaying; //Control Booleans
 var towerReg; //Regions
 var fladIdle1, fladIdle2, fladConjure, walk1, walk2, walk3; //Animations
 var back, box1, box2, box3; //Static Images
-var walkers, boxes; // Arrays
+var walkers, boxes, anim; // Arrays
 
 var engine; //Matter.js Variables
 var world;
 var boxes = [];
 var walkers = [];
+anim = [];
 var ground;
 var Engine = Matter.Engine,
   World = Matter.World,
@@ -270,8 +271,6 @@ function detectCollision(){
       // }
 
     }
-  }
-}
 
 function showboxes(){
 	Engine.update(engine);
