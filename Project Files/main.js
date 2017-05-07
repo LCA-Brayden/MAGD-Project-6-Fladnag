@@ -101,7 +101,7 @@ function draw() {
   showWalker();
 	boxTimer();
 
-  if(boxes.length > 0 && walkers.length > 0){
+  if(boxes.length >0 && walkers.length > 0){
     detectCollision();
   }
 
@@ -232,17 +232,19 @@ function Walker(x, y, image) {
 function detectCollision(){
   for (var i = 0; i < boxes.length; i++){
     for (var j = 0; j < walkers.length; j++){
-      if(boxes[i].positionX()-(boxes[i].w/2)> walkers[j].positionX()-(walkers[j].w/2)
-      && boxes[i].positionX()+(boxes[i].w/2)< walkers[j].positionX()+(walkers[j].w/2)
-      && boxes[i].positionY()-(boxes[i].h/2)> walkers[j].positionY()-(walkers[j].h/2)
-      && boxes[i].positionY()+(boxes[i].h/2)< walkers[j].positionY()+(walkers[j].h/2)){
-        walkers.splice(i, 1);
-        j--;
-      }
+       if(boxes[i].positionX+(boxes[i].w/2) <= walkers[j].positionX()-(walkers[j].w/2) && boxes[i].positionX-(boxes[i].w/2) >= walkers[j].positionX()+(walkers[j].w/2)){console.log(true); }
+      // if(boxes[i].positionY+(boxes[i].h/2) >= walkers[j].positionY()-(walkers[j].h/2)){console.log(true);}
+      // if(boxes[i].positionY-(boxes[i].h/2) <= walkers[j].positionY()+(walkers[j].h/2)){console.log(true);}
+
+      // if(boxes[i].positionX+(boxes[i].w/2) >= walkers[j].positionX()-(walkers[j].w/2) && boxes[i].positionX-(boxes[i].w/2) <= walkers[j].positionX()+(walkers[j].w/2)
+      // && boxes[i].positionY+(boxes[i].h/2) >= walkers[j].positionY()-(walkers[j].h/2) && boxes[i].positionY-(boxes[i].h/2) <= walkers[j].positionY()+(walkers[j].h/2)){
+      //   // walkers.splice(j, 1);
+      //   // j--;
+      //  console.log(true);
+      // }
+
     }
   }
-
-
 }
 
 function showboxes(){

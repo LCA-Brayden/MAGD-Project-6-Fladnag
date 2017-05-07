@@ -1,7 +1,7 @@
 
 
 function Walker(x,y,w,h,d) {
-  var spd = random(1,5);
+  var spd = random(2,5);
   var isOnScreen = true;
   this.y = y;
   this.w = w;
