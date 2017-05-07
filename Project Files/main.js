@@ -72,7 +72,7 @@ function setup() {
     updateSprites(true); // Can pause sprites + animations.
 
     //Variable Declarations
-    dayLength = 120.0; 	// 2 Minutes - length of playtime in seconds.
+    dayLength = 7200.0; // 2 Minutes - length of playtime in seconds.
     currentTime = 0.0; 	// Counts up to dayLength - currentt play session's length in seconds.
     currentScore = 0; 	// Keeps track of score.
     interBox = 1.0; 	// Buffer time in seconds between each box drop.
@@ -110,6 +110,7 @@ function setup() {
 }
 
 function draw() {
+  if(dayLength > frameCount){
 	background(back, 100);
 
 	gameTimer();
@@ -131,8 +132,12 @@ function draw() {
   push();
   fill(255,spawnColor,spawnColor,125)
   rectMode(CENTER);
-  rect(mouseX,mouseY,40,40);
+  rect(mouseX,mouseY,80,80);
   pop();
+  }
+  else{
+    background(0);
+  }
 }
 
 function gameTimer() { //Constantly count up from current time until it reaches dayLength. Then, stop the game.
@@ -246,8 +251,6 @@ function Walker(x, y, image) {
 	this.shape;
 }
 
-
-
 function detectCollision(){
   for (var i = 0; i < boxes.length; i++){
     for (var j = 0; j < walkers.length; j++){
@@ -255,7 +258,6 @@ function detectCollision(){
       && boxes[i].positionX()+(boxes[i].w/2) >= walkers[j].positionX()-(walkers[j].w/2)
       && boxes[i].positionY()+(boxes[i].h/2) >= walkers[j].positionY()-(walkers[j].h/2)
       && boxes[i].positionY()-(boxes[i].h/2) <= walkers[j].positionY()+(walkers[j].h/2)){
-        console.log("Collision");
         walkers.splice(j, 1);
         j--;
       }
@@ -277,15 +279,15 @@ function showboxes(){
 
     switch(boxes[i].t){     // draw the image for the box at boxes[i].positionX() , boxes[i].positionY() the width and height are boxes[i].w , boxes[i].h
       case 0:
-
+        image(box1, boxes[i].positionX()-(boxes[i].w/2),  boxes[i].positionY()-(boxes[i].h/2));
         break;
 
       case 1:
-
+        image(box2, boxes[i].positionX()-(boxes[i].w/2),  boxes[i].positionY()-(boxes[i].h/2));
         break;
 
       case 2:
-
+        image(box3, boxes[i].positionX()-(boxes[i].w/2),  boxes[i].positionY()-(boxes[i].h/2));
         break;
     }
   }
@@ -341,7 +343,7 @@ function boxCheck(){
 
 function mousePressed() {
 	if(interBoxCheck == 0 && spawnBox){
-  	boxes.push(new Box(mouseX, mouseY, 40,40,int(random(0,3))));
+  	boxes.push(new Box(mouseX, mouseY, 80,80,int(random(0,3))));
 		interBoxCheck = interBox*framerate;
 	}
 }
