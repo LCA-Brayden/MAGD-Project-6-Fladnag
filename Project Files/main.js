@@ -16,6 +16,7 @@ var interBox, interBoxCheck, interCount, walkerCount, walkerMax, animTracker, an
 var boxLock, gameGoing, idlePlaying, conjPlaying; //Control Booleans
 var towerReg; //Regions
 var fladIdle1, fladIdle2, fladConjure, walk1, walk2, walk3; //Animations
+var fladIdle1Sh, fladIdle2Sh, fladConjureSh; //Spritesheets
 var back, box1, box2, box3; //Static Images
 var walkers, boxes, anim; // Arrays
 
@@ -23,7 +24,6 @@ var engine; //Matter.js Variables
 var world;
 var boxes = [];
 var walkers = [];
-anim = [];
 var ground;
 var Engine = Matter.Engine,
   World = Matter.World,
@@ -33,7 +33,7 @@ var Engine = Matter.Engine,
 function preLoad() {
 	//Fladnag
 
-	fladIdle2 = loadImage("data/anim/fladnag_fidget1_sheet.png");	// Fidget Animation 1
+	fladIdle2Sh = loadImage("data/anim/fladnag_fidget1_sheet.png");	// Fidget Animation 1
 	// fladConjure = loadImage("data/anim/fladnag_conjure1_sheet.png"); // Conjure Animation 1
 
 	// Walkers
@@ -107,6 +107,8 @@ function setup() {
 
 function draw() {
 	background(back, 100);
+
+	//Draw Fladnag here. 
 
 	gameTimer();
 	gameControl();
@@ -186,11 +188,14 @@ function heyListen() {
 }
 
 function animPrep() { //Loads & Retrieves SpriteSheet data for later use. Stores all data in anim[] array, via SprSheet objects.
-	fladIdle1 = loadImage("data/anim/fladnag_idle_sheet.png"); 		// Main Idle Loop
-	anim[0] = new SprSheet(10, 6, fladIdle1, 4752, 6120);
+	fladIdle1Sh = loadImage("data/anim/fladnag_idle_sheet.png"); 		// Main Idle Loop
+	fladIdle1 = new SprSheet(10, 6, fladIdle1, 4752, 6120);
 	console.log("Slicing");
-	anim[0].sliceSheet(10, 6, 4752, 6120);
-	console.log("Sliced. cell[] = " + anim[0].cell);
+	fladIdle1.sliceSheet(10, 6, 4752, 6120, 60);
+	fladIdle1.getTestArray(57, 57);
+	fladIdle1.getX(57);
+	fladIdle1.getY(57);
+
 }
 
 //Event Listener functions go here.
@@ -233,23 +238,6 @@ function boxHit(which) { //Depending on which Walker was hit, add Walker's point
 function edgeHit(which) { //If a walker makes it to the edge of the screen (the one it doesn't start at), delete Walker.
 
 }
-
-//Walker Class/Functions
-function Walker(x, y, image) {
-	this.xPos;
-	this.shape;
-}
-
-
-/*function createWalker() {
-	var check = int(random(0,2));
-  if(check == 0){
-    walkers.push(new Walker(-20,height-50,40,100,1));
-  }
-  if(check == 1){
-    walkers.push(new Walker(width+20,height-50,40,100,-1));
-  }
-}*/
 
 function detectCollision(){
   for (var i = 0; i < boxes.length; i++){
@@ -332,3 +320,4 @@ function keyPressed(){
    walkers.push(new Walker(width+20,height-100,40,100,-1));
  }
 }
+
