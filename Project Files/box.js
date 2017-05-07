@@ -1,6 +1,6 @@
 
 
-function Box(x, y, w, h) {
+function Box(x, y, w, h,t) {
   var options = {
     friction: 0.3,
     restitution: 0.6
@@ -9,6 +9,7 @@ function Box(x, y, w, h) {
   this.w = w;
   this.h = h;
   World.add(world, this.body);
+  this.t = t;
 
   this.isOffScreen = function() {
     var pos = this.body.position;

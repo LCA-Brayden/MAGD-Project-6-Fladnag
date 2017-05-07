@@ -76,7 +76,7 @@ function setup() {
     currentTime = 0.0; 	// Counts up to dayLength - currentt play session's length in seconds.
     currentScore = 0; 	// Keeps track of score.
     interBox = 1.0; 	// Buffer time in seconds between each box drop.
-	interBoxCheck = 0; //Will spawn a box when interBoxCheck == 0 if the mouse is pressed.
+	  interBoxCheck = 0; //Will spawn a box when interBoxCheck == 0 if the mouse is pressed.
     walkerCount = 0;	// Keeps track of number of NPCs on screen.
     walkerMax = 10; 	// Max number of NPCs on screen at once.
     animTracker = 0.0; 	// Keeps track of idle time/tracks when to play an idle animation (in theory)
@@ -88,7 +88,7 @@ function setup() {
     gameGoing = false;	// When on, currentTime counts up, and play is in session. (for score/game control)
     idlePlaying = false;// When on, an Idle animation is playing.
     conjPlaying = false;// When on, the Conjure animation is playing. (used to prevent animation overlap)
-    spawnBox = true;
+    spawnBox = true; // changes to false when the mouse us unfairly close to the walkers.
 
     //Gameplay Regions
     towerReg = createVector();
@@ -106,7 +106,7 @@ function setup() {
 	world = engine.world;
 	var options = {isStatic: true}//end of matter.js setup
 
-  spawnColor = 255;
+  spawnColor = 255; // color of the transparent box that indicates where a box will spawn
 }
 
 function draw() {
@@ -246,15 +246,7 @@ function Walker(x, y, image) {
 	this.shape;
 }
 
-function createWalker() {
-	var check = int(random(0,2));
-  if(check == 0){
-    walkers.push(new Walker(-20,height-100,40,100,1));
-  }
-  if(check == 1){
-    walkers.push(new Walker(width+20,height-100,40,100,-1));
-  }
-}
+
 
 function detectCollision(){
   for (var i = 0; i < boxes.length; i++){
@@ -280,14 +272,23 @@ function showboxes(){
       i--;
     }
   }
-  for (var i = 0; i < boxes.length; i++)
-	{ boxes[i].show();}
-}
+  for (var i = 0; i < boxes.length; i++){
+    boxes[i].show();
 
-function boxTimer(){
-	if(interBoxCheck > 0){
-		interBoxCheck--;
-	}
+    switch(boxes[i].t){     // draw the image for the box at boxes[i].positionX() , boxes[i].positionY() the width and height are boxes[i].w , boxes[i].h
+      case 0:
+
+        break;
+
+      case 1:
+
+        break;
+
+      case 2:
+
+        break;
+    }
+  }
 }
 
 function showWalker(){
@@ -300,10 +301,32 @@ function showWalker(){
   }
 
   for(i = 0; i<walkers.length;i++){
-
     walkers[i].show();
+
+    switch(walkers[i].t){ // draw the image for the walkers at walkers[i].positionX() , walkers[i].positionY() the width and height are walkers[i].w , walkers[i].h
+      case 0:
+
+        break;
+
+      case 1:
+
+        break;
+
+      case 2:
+
+        break;
+    }
+
   }
 }
+
+function boxTimer(){
+	if(interBoxCheck > 0){
+		interBoxCheck--;
+	}
+}
+
+
 
 function boxCheck(){
   if(mouseY >= 590 ){
@@ -318,7 +341,17 @@ function boxCheck(){
 
 function mousePressed() {
 	if(interBoxCheck == 0 && spawnBox){
-  	boxes.push(new Box(mouseX, mouseY, 40,40));
+  	boxes.push(new Box(mouseX, mouseY, 40,40,int(random(0,3))));
 		interBoxCheck = interBox*framerate;
 	}
+}
+
+function createWalker() {
+	var check = int(random(0,2));
+  if(check == 0){
+    walkers.push(new Walker(-20,height-100,40,100,1,int(random(0,3))));
+  }
+  if(check == 1){
+    walkers.push(new Walker(width+20,height-100,40,100,-1,int(random(0,3))));
+  }
 }

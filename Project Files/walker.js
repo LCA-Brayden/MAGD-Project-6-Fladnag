@@ -1,6 +1,6 @@
 
 
-function Walker(x,y,w,h,d) {
+function Walker(x,y,w,h,d,t) {
   var spd = random(1,5);
   var isOnScreen = true;
   this.y = y;
@@ -8,7 +8,7 @@ function Walker(x,y,w,h,d) {
   this.h = h;
   this.x = x;
   this.d = d;
-
+  this.t = t;
   this.update = function(){
     if(isOnScreen)
     this.x += (d*spd);
