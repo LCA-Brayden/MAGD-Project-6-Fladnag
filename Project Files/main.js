@@ -16,8 +16,8 @@ var interBox, interBoxCheck, interCount, walkerCount, walkerMax, animTracker, an
 var boxLock, gameGoing, idlePlaying, conjPlaying; //Control Booleans
 var towerReg; //Regions
 var fladIdle1, fladIdle2, fladConjure, walk1, walk2, walk3; //Animations
+var back, box1, box2, box3; //Static Images
 var walkers, boxes; // Arrays
-var back;
 
 var engine; //Matter.js Variables
 var world;
@@ -39,6 +39,8 @@ function preLoad() {
 	// walk1 = loadImage("data/anim/walker1_sheet.png"); //Walker 1 Cycle
 	// walk2 = loadImage("data/anim/walker2_sheet.png"); //Walker 2 Cycle
 	// walk3 = loadImage("data/anim/walker3_sheet.png"); //Walker 3 Cycle
+
+
 
 	heyListen();
 }
@@ -89,6 +91,9 @@ function setup() {
 
     //Images
     back = loadImage("data/background1.png"); //Background Image
+    box1 = loadImage("data/box1.png");
+    box2 = loadImage("data/box2.png");
+    box3 = loadImage("data/box3.png");
 
     //Functions
     matterCheck();
