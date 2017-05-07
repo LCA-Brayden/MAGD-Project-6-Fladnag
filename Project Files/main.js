@@ -17,7 +17,7 @@ var boxLock, gameGoing, idlePlaying, conjPlaying; //Control Booleans
 var towerReg; //Regions
 var fladIdle1, fladIdle2, fladConjure, walk1, walk2, walk3; //Animations
 var walkers, boxes; // Arrays
-var backIMG;
+var back;
 
 var engine; //Matter.js Variables
 var world;
@@ -30,10 +30,15 @@ var Engine = Matter.Engine,
 
 
 function preLoad() {
-	backIMG = loadImage("data/background.png");
-	//Preload animations + sprites here.
+	//Fladnag
+	fladIdle1 = loadImage("data/anim/fladnag_idle_sheet.png"); 		// Main Idle Loop
+	fladIdle2 = loadImage("data/anim/fladnag_fidget1_sheet.png");	// Fidget Animation 1
+	// fladConjure = loadImage("data/anim/fladnag_conjure1_sheet.png"); // Conjure Animation 1
 
-	//loadAnimation(sprite);
+	// Walkers
+	// walk1 = loadImage("data/anim/walker1_sheet.png"); //Walker 1 Cycle
+	// walk2 = loadImage("data/anim/walker2_sheet.png"); //Walker 2 Cycle
+	// walk3 = loadImage("data/anim/walker3_sheet.png"); //Walker 3 Cycle
 
 	heyListen();
 }
@@ -66,7 +71,7 @@ function setup() {
     currentTime = 0.0; 	// Counts up to dayLength - currentt play session's length in seconds.
     currentScore = 0; 	// Keeps track of score.
     interBox = 2.0; 	// Buffer time in seconds between each box drop.
-		interBoxCheck = 0; //Will spawn a box when interBoxCheck == 0 if the mouse is pressed.
+	interBoxCheck = 0; //Will spawn a box when interBoxCheck == 0 if the mouse is pressed.
     walkerCount = 0;	// Keeps track of number of NPCs on screen.
     walkerMax = 10; 	// Max number of NPCs on screen at once.
     animTracker = 0.0; 	// Keeps track of idle time/tracks when to play an idle animation (in theory)
@@ -82,23 +87,25 @@ function setup() {
     //Gameplay Regions
     towerReg = createVector();
 
+    //Images
+    back = loadImage("data/background1.png"); //Background Image
 
     //Functions
     matterCheck();
 
-		engine = Engine.create(); //Matter.js setup
-	  world = engine.world;
-	  var options = {isStatic: true}//end of matter.js setup
+	engine = Engine.create(); //Matter.js setup
+	world = engine.world;
+	var options = {isStatic: true}//end of matter.js setup
 }
 
 function draw() {
-	background(0);
+	background(back, 100);
 
 	gameTimer();
 	gameControl();
 	gameMouse();
 	showboxes();
-  showWalker();
+  	showWalker();
 	boxTimer();
 
   if(boxes.length > 0 && walkers.length > 0){
@@ -231,11 +238,13 @@ function Walker(x, y, image) {
 
 function detectCollision(){
   for (var i = 0; i < boxes.length; i++){
+  		console.log("In detect");
     for (var j = 0; j < walkers.length; j++){
       if(boxes[i].positionX()-(boxes[i].w/2)> walkers[j].positionX()-(walkers[j].w/2)
       && boxes[i].positionX()+(boxes[i].w/2)< walkers[j].positionX()+(walkers[j].w/2)
       && boxes[i].positionY()-(boxes[i].h/2)> walkers[j].positionY()-(walkers[j].h/2)
       && boxes[i].positionY()+(boxes[i].h/2)< walkers[j].positionY()+(walkers[j].h/2)){
+      	console.log("Collision");
         walkers.splice(i, 1);
         j--;
       }
