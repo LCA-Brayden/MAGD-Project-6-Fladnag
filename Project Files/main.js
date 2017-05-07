@@ -32,7 +32,7 @@ var Engine = Matter.Engine,
 
 function preLoad() {
 	//Fladnag
-	fladIdle1 = loadImage("data/anim/fladnag_idle_sheet.png"); 		// Main Idle Loop
+
 	fladIdle2 = loadImage("data/anim/fladnag_fidget1_sheet.png");	// Fidget Animation 1
 	// fladConjure = loadImage("data/anim/fladnag_conjure1_sheet.png"); // Conjure Animation 1
 
@@ -98,6 +98,7 @@ function setup() {
 
     //Functions
     matterCheck();
+    animPrep();
 
 	engine = Engine.create(); //Matter.js setup
 	world = engine.world;
@@ -182,6 +183,14 @@ function heyListen() {
 	//Any Event Listeners we might want go here.
 
 
+}
+
+function animPrep() { //Loads & Retrieves SpriteSheet data for later use. Stores all data in anim[] array, via SprSheet objects.
+	fladIdle1 = loadImage("data/anim/fladnag_idle_sheet.png"); 		// Main Idle Loop
+	anim[0] = new SprSheet(10, 6, fladIdle1, 4752, 6120);
+	console.log("Slicing");
+	anim[0].sliceSheet(10, 6, 4752, 6120);
+	console.log("Sliced. cell[] = " + anim[0].cell);
 }
 
 //Event Listener functions go here.
