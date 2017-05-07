@@ -231,11 +231,11 @@ function Walker(x, y, image) {
 
 function detectCollision(){
   for (var i = 0; i < boxes.length; i++){
-    for (var j = 0; i < walkers.length; j++){
-      if(boxes[i].positionX()-(boxes[i].w/2)> walkers[j].x-(walkers[j].w/2)
-      && boxes[i].positionX()+(boxes[i].w/2)< walkers[j].x+(walkers[j].w/2)
-      && boxes[i].positionY()-(boxes[i].h/2)> walkers[j].y-(walkers[j].h/2)
-      && boxes[i].positionY()+(boxes[i].h/2)< walkers[j].y+(walkers[j].h/2)){
+    for (var j = 0; j < walkers.length; j++){
+      if(boxes[i].positionX()-(boxes[i].w/2)> walkers[j].positionX()-(walkers[j].w/2)
+      && boxes[i].positionX()+(boxes[i].w/2)< walkers[j].positionX()+(walkers[j].w/2)
+      && boxes[i].positionY()-(boxes[i].h/2)> walkers[j].positionY()-(walkers[j].h/2)
+      && boxes[i].positionY()+(boxes[i].h/2)< walkers[j].positionY()+(walkers[j].h/2)){
         walkers.splice(i, 1);
         j--;
       }
