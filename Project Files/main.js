@@ -270,8 +270,6 @@ function detectCollision(){
       // }
 
     }
-  }
-}
 
 function showboxes(){
 	Engine.update(engine);
