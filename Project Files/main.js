@@ -75,7 +75,7 @@ function setup() {
     dayLength = 120.0; 	// 2 Minutes - length of playtime in seconds.
     currentTime = 0.0; 	// Counts up to dayLength - currentt play session's length in seconds.
     currentScore = 0; 	// Keeps track of score.
-    interBox = 2.0; 	// Buffer time in seconds between each box drop.
+    interBox = 1.0; 	// Buffer time in seconds between each box drop.
 	interBoxCheck = 0; //Will spawn a box when interBoxCheck == 0 if the mouse is pressed.
     walkerCount = 0;	// Keeps track of number of NPCs on screen.
     walkerMax = 10; 	// Max number of NPCs on screen at once.
@@ -123,6 +123,11 @@ function draw() {
   if(boxes.length > 0 && walkers.length > 0){
     detectCollision();
   }
+
+  if(frameCount % 90 ==0){
+    createWalker();
+  }
+
   push();
   fill(255,spawnColor,spawnColor,125)
   rectMode(CENTER);
@@ -241,15 +246,15 @@ function Walker(x, y, image) {
 	this.shape;
 }
 
-/*function createWalker() {
+function createWalker() {
 	var check = int(random(0,2));
   if(check == 0){
-    walkers.push(new Walker(-20,height-50,40,100,1));
+    walkers.push(new Walker(-20,height-100,40,100,1));
   }
   if(check == 1){
-    walkers.push(new Walker(width+20,height-50,40,100,-1));
+    walkers.push(new Walker(width+20,height-100,40,100,-1));
   }
-}*/
+}
 
 function detectCollision(){
   for (var i = 0; i < boxes.length; i++){
@@ -316,14 +321,4 @@ function mousePressed() {
   	boxes.push(new Box(mouseX, mouseY, 40,40));
 		interBoxCheck = interBox*framerate;
 	}
-}
-
-function keyPressed(){
-  var check = int(random(0,2));
- if(check == 0){
-    walkers.push(new Walker(-20,height-100,40,100,1));
- }
- if(check == 1){
-   walkers.push(new Walker(width+20,height-100,40,100,-1));
- }
 }
