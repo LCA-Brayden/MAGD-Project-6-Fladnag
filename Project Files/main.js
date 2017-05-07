@@ -22,6 +22,7 @@ var backIMG;
 var engine; //Matter.js Variables
 var world;
 var boxes = [];
+var walkers = [];
 var ground;
 var Engine = Matter.Engine,
   World = Matter.World,
@@ -81,9 +82,6 @@ function setup() {
     //Gameplay Regions
     towerReg = createVector();
 
-    //Arrays
-    walkers = [];
-    boxes = [];
 
     //Functions
     matterCheck();
@@ -102,6 +100,11 @@ function draw() {
 	showboxes();
   showWalker();
 	boxTimer();
+
+  if(boxes.length > 0 && walkers.length > 0){
+    detectCollision();
+  }
+
 }
 
 function gameTimer() { //Constantly count up from current time until it reaches dayLength. Then, stop the game.
@@ -226,6 +229,22 @@ function Walker(x, y, image) {
   }
 }*/
 
+function detectCollision(){
+  for (var i = 0; i < boxes.length; i++){
+    for (var j = 0; i < walkers.length; j++){
+      if(boxes[i].positionX()-(boxes[i].w/2)> walkers[j].x-(walkers[j].w/2)
+      && boxes[i].positionX()+(boxes[i].w/2)< walkers[j].x+(walkers[j].w/2)
+      && boxes[i].positionY()-(boxes[i].h/2)> walkers[j].y-(walkers[j].h/2)
+      && boxes[i].positionY()+(boxes[i].h/2)< walkers[j].y+(walkers[j].h/2)){
+        walkers.splice(i, 1);
+        j--;
+      }
+    }
+  }
+
+
+}
+
 function showboxes(){
 	Engine.update(engine);
   for (var i = 0; i < boxes.length; i++) {
@@ -237,8 +256,6 @@ function showboxes(){
   }
   for (var i = 0; i < boxes.length; i++)
 	{ boxes[i].show();}
-  noStroke(255);
-  fill(170);
 }
 
 function boxTimer(){
@@ -249,6 +266,7 @@ function boxTimer(){
 
 function showWalker(){
   for (var i = 0; i < walkers.length; i++) {
+    walkers[i].update();
     if (walkers[i].isOffScreen()) {
       walkers.splice(i, 1);
       i--;
@@ -256,7 +274,7 @@ function showWalker(){
   }
 
   for(i = 0; i<walkers.length;i++){
-    walkers[i].update();
+
     walkers[i].show();
   }
 }

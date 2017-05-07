@@ -19,6 +19,16 @@ function Box(x, y, w, h) {
     World.remove(world, this.body);
   }
 
+  this.positionX = function(){
+    var pos = this.body.position;
+    return pos.x;
+  }
+
+  this.positionY = function(){
+    var pos = this.body.position;
+    return pos.y;
+  }
+
   this.show = function() {
     var pos = this.body.position;
     var angle = this.body.angle;

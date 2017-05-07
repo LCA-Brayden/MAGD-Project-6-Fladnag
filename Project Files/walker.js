@@ -1,7 +1,7 @@
 
 
 function Walker(x,y,w,h,d) {
-  var spd = random(0,5);
+  var spd = random(1,5);
   var isOnScreen = true;
   this.y = y;
   this.w = w;
@@ -23,6 +23,16 @@ function Walker(x,y,w,h,d) {
     	return true;
   }
   else return false;
+}
+
+this.positionX = function(){
+  var posX = this.x
+  return posX;
+}
+
+this.positionY = function(){
+  var posY = this.y
+  return posY;
 }
 
 
