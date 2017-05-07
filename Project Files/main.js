@@ -13,11 +13,13 @@
 var framerate; //Settings
 var dayLength, currentTime, currentScore; //Gameplay
 var interBox, interBoxCheck, interCount, walkerCount, walkerMax, animTracker, animCur, mouse; //Game Control Variables
-var boxLock, gameGoing, idlePlaying, conjPlaying; //Control Booleans
+var boxLock, gameGoing, idlePlaying, conjPlaying,spawnBox; //Control Booleans
 var towerReg; //Regions
 var fladIdle1, fladIdle2, fladConjure, walk1, walk2, walk3; //Animations
 var back, box1, box2, box3; //Static Images
 var walkers, boxes, anim; // Arrays
+var spawncolor;
+
 
 var engine; //Matter.js Variables
 var world;
@@ -86,6 +88,7 @@ function setup() {
     gameGoing = false;	// When on, currentTime counts up, and play is in session. (for score/game control)
     idlePlaying = false;// When on, an Idle animation is playing.
     conjPlaying = false;// When on, the Conjure animation is playing. (used to prevent animation overlap)
+    spawnBox = true;
 
     //Gameplay Regions
     towerReg = createVector();
@@ -102,6 +105,8 @@ function setup() {
 	engine = Engine.create(); //Matter.js setup
 	world = engine.world;
 	var options = {isStatic: true}//end of matter.js setup
+
+  spawnColor = 255;
 }
 
 function draw() {
@@ -111,13 +116,18 @@ function draw() {
 	gameControl();
 	gameMouse();
 	showboxes();
-  	showWalker();
+  showWalker();
 	boxTimer();
+  boxCheck();
 
-  if(boxes.length >0 && walkers.length > 0){
+  if(boxes.length > 0 && walkers.length > 0){
     detectCollision();
   }
-
+  push();
+  fill(255,spawnColor,spawnColor,125)
+  rectMode(CENTER);
+  rect(mouseX,mouseY,40,40);
+  pop();
 }
 
 function gameTimer() { //Constantly count up from current time until it reaches dayLength. Then, stop the game.
@@ -231,7 +241,6 @@ function Walker(x, y, image) {
 	this.shape;
 }
 
-
 /*function createWalker() {
 	var check = int(random(0,2));
   if(check == 0){
@@ -244,33 +253,18 @@ function Walker(x, y, image) {
 
 function detectCollision(){
   for (var i = 0; i < boxes.length; i++){
-  		console.log("In detect");
     for (var j = 0; j < walkers.length; j++){
-
-       if(boxes[i].positionX+(boxes[i].w/2) <= walkers[j].positionX()-(walkers[j].w/2) && boxes[i].positionX-(boxes[i].w/2) >= walkers[j].positionX()+(walkers[j].w/2)){console.log(true); }
-      // if(boxes[i].positionY+(boxes[i].h/2) >= walkers[j].positionY()-(walkers[j].h/2)){console.log(true);}
-      // if(boxes[i].positionY-(boxes[i].h/2) <= walkers[j].positionY()+(walkers[j].h/2)){console.log(true);}
-
-      if(boxes[i].positionX()-(boxes[i].w/2)> walkers[j].positionX()-(walkers[j].w/2)
-      && boxes[i].positionX()+(boxes[i].w/2)< walkers[j].positionX()+(walkers[j].w/2)
-      && boxes[i].positionY()-(boxes[i].h/2)> walkers[j].positionY()-(walkers[j].h/2)
-      && boxes[i].positionY()+(boxes[i].h/2)< walkers[j].positionY()+(walkers[j].h/2)){
-      	console.log("Collision");
-        walkers.splice(i, 1);
+      if(boxes[i].positionX()-(boxes[i].w/2) <= walkers[j].positionX()+(walkers[j].w/2)
+      && boxes[i].positionX()+(boxes[i].w/2) >= walkers[j].positionX()-(walkers[j].w/2)
+      && boxes[i].positionY()+(boxes[i].h/2) >= walkers[j].positionY()-(walkers[j].h/2)
+      && boxes[i].positionY()-(boxes[i].h/2) <= walkers[j].positionY()+(walkers[j].h/2)){
+        console.log("Collision");
+        walkers.splice(j, 1);
         j--;
       }
     }
-  }
-
-
-      // if(boxes[i].positionX+(boxes[i].w/2) >= walkers[j].positionX()-(walkers[j].w/2) && boxes[i].positionX-(boxes[i].w/2) <= walkers[j].positionX()+(walkers[j].w/2)
-      // && boxes[i].positionY+(boxes[i].h/2) >= walkers[j].positionY()-(walkers[j].h/2) && boxes[i].positionY-(boxes[i].h/2) <= walkers[j].positionY()+(walkers[j].h/2)){
-      //   // walkers.splice(j, 1);
-      //   // j--;
-      //  console.log(true);
-      // }
-
-    }
+ }
+}
 
 function showboxes(){
 	Engine.update(engine);
@@ -306,9 +300,19 @@ function showWalker(){
   }
 }
 
+function boxCheck(){
+  if(mouseY >= 590 ){
+    spawnColor = 0;
+    spawnBox = false;
+  }
+  else {
+    spawnColor = 255;
+    spawnBox = true;
+  }
+}
 
 function mousePressed() {
-	if(interBoxCheck == 0){
+	if(interBoxCheck == 0 && spawnBox){
   	boxes.push(new Box(mouseX, mouseY, 40,40));
 		interBoxCheck = interBox*framerate;
 	}
