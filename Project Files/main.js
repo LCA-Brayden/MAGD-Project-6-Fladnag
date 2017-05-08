@@ -13,7 +13,7 @@
 var framerate; //Settings
 var dayLength, currentTime, currentScore; //Gameplay
 var interBox, interBoxCheck, interCount, walkerCount, walkerMax, animTracker, animCur, animFrame, animDelay, animFid, animFidTrig, mouse; //Game Control Variables
-var boxLock, gameGoing, idlePlaying, conjPlaying,spawnBox; //Control Booleans
+var boxLock, gameGoing, idlePlaying, conjPlaying,spawnBox, fidgeting; //Control Booleans
 var towerReg; //Regions
 var fladIdle1, fladIdle2, fladIdle3, fladIdle4, fladConjureL, fladConjureR, walk1, walk2, walk3; //Animations
 var fladIdle1Sh, fladIdle2Sh, fladIdle3Sh, fladIdle4Sh, fladConjureLSh, fladConjureRSh, walk1Sh, walk2Sh, walk3Sh; //Spritesheets
@@ -77,13 +77,13 @@ function setup() {
 
     mouse = createVector(0, 0);
 
-
     //Booleans
     boxLock = false; 	// When on, prevents player from conjuring boxes. (used to prevent spam)
     gameGoing = false;	// When on, currentTime counts up, and play is in session. (for score/game control)
     idlePlaying = false;// When on, an Idle animation is playing.
     conjPlaying = false;// When on, the Conjure animation is playing. (used to prevent animation overlap)
     spawnBox = true; // changes to false when the mouse us unfairly close to the walkers.
+    fidgeting = false; //Controls whether fidgeting will be detected + played (disabled due to amount of work involved to fix all animations + properly cycle back)
 
     //Gameplay Regions
     towerReg = createVector();
@@ -105,7 +105,6 @@ function draw() {
 	// Debug Spritesheet Display
 	//image(fladIdle1Sh, 0, 0);
 
-	gameTimer();
 	gameControl();
 	gameMouse();
   animState();
@@ -133,19 +132,6 @@ function draw() {
   }
 }
 
-function gameTimer() { //Constantly count up from current time until it reaches dayLength. Then, stop the game.
-	if (gameGoing = true) {
-		if (currentTime <= dayLength) {
-			//Do nothing or keep counting.
-			//Move Sun across its arc via currentTime/dayLength percentage.
-		}
-		else {
-			gameGoing = false;
-			//End game sequence, display final score, etc.
-		}
-	}
-}
-
 function gameControl() { //Various settings for game control/balance. Stuff like an interim timer between box drops, max number of Walkers on screen, idle animations.
 	//BoxLock control
 	if (boxLock == true) {
@@ -158,6 +144,7 @@ function gameControl() { //Various settings for game control/balance. Stuff like
 		}
 	}
 
+if (fidgeting == true) {
 	if (animCur == 0 && frameCount % 60 == 0) {
 		animFid += 1; 
 	}
@@ -165,8 +152,8 @@ function gameControl() { //Various settings for game control/balance. Stuff like
 	if (animFid == animFidTrig) {
 		animFr = 0;
 		animCur = int(random(1,3));
-
 	}
+}
 
 	//Idle/Animation Control: Fladnag
 	switch (animCur) {
@@ -212,8 +199,8 @@ function animDraw(animObj, animSheet, destX, destY) {
 
 	pop();
 
-/*	if (animFr < frames)
-		// && frameCount % animDelay == 0)
+	if (animFr < frames
+		&& frameCount % animDelay == 0)
 
 	var dX = animObj.getDimX();
 	var dY = animObj.getDimY();
@@ -240,14 +227,6 @@ function animDraw(animObj, animSheet, destX, destY) {
 function gameMouse() { //Contains all mouse control functions.
 	mouse.x = mouseX;
 	mouse.y = mouseY;
-}
-
-
-
-function heyListen() {
-	//Any Event Listeners we might want go here.
-
-
 }
 
 function animPrep() { //Loads & Retrieves SpriteSheet data for later use. Stores all data in anim[] array, via SprSheet objects.
@@ -295,34 +274,6 @@ function animPrep() { //Loads & Retrieves SpriteSheet data for later use. Stores
     man2 = loadImage("data/anim/Passersby/Male/Male3.png");
     man3 = loadImage("data/anim/Passersby/Male/Male4.png");
     man4 = loadImage("data/anim/Passersby/Male/Male5.png");
-}
-
-//Event Listener functions go here.
-function gameStart() { //Reset all variables, start game fresh.
-	//Clear all Walkers currently in game.
-	currentTime = 0.0;
-	currentScore = 0;
-	gameGoing = true;
-	boxLock = false;
-}
-
-function gamePause() { //Turns off gameGoing, which stops all gameplay. (stops currentTime, freezes all objects.)
-	gameGoing = false;
-	updateSprites(false);
-	// Freeze walkers and boxes in place.
-
-	// (Idea) Alter CSS of menu objects like buttons, etc. to alter current buttons shown. - Brayden
-}
-
-function gameResume() { //Turns on gameGoing, resuming all gameplay. Frees all objects.
-	gameGoing = true;
-	updateSprites(true);
-	// Return velocity to all previously moving objects.
-}
-
-function gameEnd() { // Turns off booleans, updateSprites, and stops all counting.
-	gameGoing = false;
-	updateSprites(false);
 }
 
 function detectCollision(){
