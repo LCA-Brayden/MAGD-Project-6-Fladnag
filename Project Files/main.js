@@ -19,7 +19,8 @@ var fladIdle1, fladIdle2, fladIdle3, fladIdle4, fladConjureL, fladConjureR, walk
 var fladIdle1Sh, fladIdle2Sh, fladIdle3Sh, fladIdle4Sh, fladConjureLSh, fladConjureRSh, walk1Sh, walk2Sh, walk3Sh; //Spritesheets
 var back, box1, box2, box3; //Static Images
 var walkers, boxes, anim; // Arrays
-var spawncolor; 
+var spawncolor;
+var animFrames;
 
 
 var engine; //Matter.js Variables
@@ -81,7 +82,9 @@ function setup() {
     walkerMax = 10; 	// Max number of NPCs on screen at once.
     animTracker = 0.0; 	// Keeps track of idle time/tracks when to play an idle animation (in theory)
     animCur = 0; 		// Keeps track of which animation is currently playing.
+    animFrames = 0; // keeps track of how many frames are left in the current animation state
     mouse = createVector(0, 0);
+
 
     //Booleans
     boxLock = false; 	// When on, prevents player from conjuring boxes. (used to prevent spam)
@@ -114,11 +117,12 @@ function draw() {
   if(dayLength > frameCount){
 	background(back, 100);
 
-	//Draw Fladnag here. 
+	//Draw Fladnag here.
 
 	gameTimer();
 	gameControl();
 	gameMouse();
+  animState();
 	showboxes();
   showWalker();
 	boxTimer();
@@ -179,6 +183,25 @@ function gameControl() { //Various settings for game control/balance. Stuff like
 		default: //Idle 1 Animation
 				break;
 	}
+}
+
+function animState(){
+  if(animCur == 0 && animFrames ==0){
+    animCur = int(random(1,3));
+    if(animCur == 1){
+      animFrames == 999;  //just a filler variable
+    }
+    if(animCur == 2){
+      animFrames == 999; //just a filler variable
+    }
+  }
+
+   if(animFrames == 0){
+    animCur = 0;
+    animFrames == 999; //just a filler variable
+  }
+
+  animFrames--;
 }
 
 function gameMouse() { //Contains all mouse control functions.
@@ -294,17 +317,13 @@ function showboxes(){
     }
   }
   for (var i = 0; i < boxes.length; i++){
-    boxes[i].show();
-
     switch(boxes[i].t){     // draw the image for the box at boxes[i].positionX() , boxes[i].positionY() the width and height are boxes[i].w , boxes[i].h
       case 0:
         image(box1, boxes[i].positionX()-(boxes[i].w/2),  boxes[i].positionY()-(boxes[i].h/2));
         break;
-
       case 1:
         image(box2, boxes[i].positionX()-(boxes[i].w/2),  boxes[i].positionY()-(boxes[i].h/2));
         break;
-
       case 2:
         image(box3, boxes[i].positionX()-(boxes[i].w/2),  boxes[i].positionY()-(boxes[i].h/2));
         break;
@@ -322,8 +341,6 @@ function showWalker(){
   }
 
   for(i = 0; i<walkers.length;i++){
-    walkers[i].show();
-
     switch(walkers[i].t){ // draw the image for the walkers at walkers[i].positionX() , walkers[i].positionY() the width and height are walkers[i].w , walkers[i].h
       case 0:
 
@@ -376,4 +393,3 @@ function createWalker() {
     walkers.push(new Walker(width+20,height-100,40,100,-1,int(random(0,3))));
   }
 }
-
