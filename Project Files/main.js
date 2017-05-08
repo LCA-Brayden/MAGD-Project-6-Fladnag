@@ -12,13 +12,13 @@
 //Variable Initialization
 var framerate; //Settings
 var dayLength, currentTime, currentScore; //Gameplay
-var interBox, interBoxCheck, interCount, walkerCount, walkerMax, animTracker, animCur, animFrame, animDelay, mouse; //Game Control Variables
+var interBox, interBoxCheck, interCount, walkerCount, walkerMax, animTracker, animCur, animFrame, animDelay, animFid, animFidTrig, mouse; //Game Control Variables
 var boxLock, gameGoing, idlePlaying, conjPlaying,spawnBox; //Control Booleans
 var towerReg; //Regions
 var fladIdle1, fladIdle2, fladIdle3, fladIdle4, fladConjureL, fladConjureR, walk1, walk2, walk3; //Animations
 var fladIdle1Sh, fladIdle2Sh, fladIdle3Sh, fladIdle4Sh, fladConjureLSh, fladConjureRSh, walk1Sh, walk2Sh, walk3Sh; //Spritesheets
 var back, box1, box2, box3; //Static Images
-var walkers, boxes, anim; // Arrays
+var walkers, boxes; // Arrays
 var fladPos, fladDim; //Fladnag Points
 var spawncolor;
 var animFrames;
@@ -69,6 +69,8 @@ function setup() {
     animFr = 0; 		// Keeps track of what frame the current animation is on. 
     animFrames = 0; 	// keeps track of how many frames are left in the current animation state
     animDelay = 5.0; 	// Amount of frames of delay between each new animation frame 
+    animFid = 0.0; 		// Fidget Timer
+    animFidTrig = 2; 	// # Of Seconds before Fidget animation plays. 
     fladPos = createVector(width/3+40, 35);
     mouse = createVector(0, 0);
 
@@ -161,12 +163,23 @@ function gameControl() { //Various settings for game control/balance. Stuff like
 		}
 	}
 
+	if (animCur == 0 && frameCount % 60 == 0) {
+		animFid += 1; 
+	}
+
+	if (animFid == animFidTrig) {
+		animFr = 0;
+		animCur = int(random(1,3));
+		// if (animFr )
+	}
+
 	//Idle/Animation Control: Fladnag
 	switch (animCur) {
-		case 0: //Idle 1 Animation
+		case 0: //Idle Animation
 			animDraw(fladIdle1, fladIdle1Sh, fladPos.x, fladPos.y);
 				break;
-		case 1: //Idle 2 Animation
+		case 1: // Idle Fidget 1
+			animDraw(fladIdle2, fladIdle2Sh, fladPos.x, fladPos.y);
 				break;
 		case 2: //Conjure Animation
 				break;
