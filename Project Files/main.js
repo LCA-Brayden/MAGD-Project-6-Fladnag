@@ -101,9 +101,7 @@ function setup() {
     box1 = loadImage("data/box1.png");
     box2 = loadImage("data/box2.png");
     box3 = loadImage("data/box3.png");
-    box1.resize(60, 60);
-    box2.resize(60, 60);
-    box3.resize(60, 60);
+
 
 
     //Functions
@@ -323,13 +321,13 @@ function showboxes(){
   for (var i = 0; i < boxes.length; i++){
     switch(boxes[i].t){     // draw the image for the box at boxes[i].positionX() , boxes[i].positionY() the width and height are boxes[i].w , boxes[i].h
       case 0:
-        image(box1, boxes[i].positionX()-(boxes[i].w/2),  boxes[i].positionY()-(boxes[i].h/2));
+        image(box1, boxes[i].positionX()-(boxes[i].w/2),  boxes[i].positionY()-(boxes[i].h/2),60,60);
         break;
       case 1:
-        image(box2, boxes[i].positionX()-(boxes[i].w/2),  boxes[i].positionY()-(boxes[i].h/2));
+        image(box2, boxes[i].positionX()-(boxes[i].w/2),  boxes[i].positionY()-(boxes[i].h/2),60,60);
         break;
       case 2:
-        image(box3, boxes[i].positionX()-(boxes[i].w/2),  boxes[i].positionY()-(boxes[i].h/2));
+        image(box3, boxes[i].positionX()-(boxes[i].w/2),  boxes[i].positionY()-(boxes[i].h/2),60,60);
         break;
     }
   }
@@ -345,6 +343,7 @@ function showWalker(){
   }
 
   for(i = 0; i<walkers.length;i++){
+    walkers[i].show();
     switch(walkers[i].t){ // draw the image for the walkers at walkers[i].positionX() , walkers[i].positionY() the width and height are walkers[i].w , walkers[i].h
       case 0:
 
