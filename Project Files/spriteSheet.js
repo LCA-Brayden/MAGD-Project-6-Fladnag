@@ -13,12 +13,12 @@ function SprSheet (rows, columns, img, dimX, dimY, cellCnt) {
 		var cellX = dX/r; 
 		var cellY = dY/c;
 		var curLoc = createVector(0,0);
-		console.log("dX: " + dX + " | dY: " + dY);
-		console.log("cellX: " + cellX + " | cellY: " + cellY);
+		// console.log("dX: " + dX + " | dY: " + dY);
+		// console.log("cellX: " + cellX + " | cellY: " + cellY);
 		var j = 0; 
 		var k = 0; 
-		console.log("DimX/Rows = " + dX/r);
-		console.log("DimY/Columns = " + dY/c);
+		// console.log("DimX/Rows = " + dX/r);
+		// console.log("DimY/Columns = " + dY/c);
 
 		for(var i = 0; i < cellCnt; i++) {
 			// console.log("curLoc: " + curLoc + " | j: " + j + " | k: " + k);
@@ -26,10 +26,10 @@ function SprSheet (rows, columns, img, dimX, dimY, cellCnt) {
 			xCells.push(curLoc.x); 
 			yCells.push(curLoc.y);
 
-		console.log("xCells["+i+"]: "+xCells[i] + " | yCells["+i+"]: " + yCells[i]);
+		// console.log("xCells["+i+"]: "+xCells[i] + " | yCells["+i+"]: " + yCells[i]);
 			if (j < c) {
 				curLoc.x += cellX;
-				console.log("NEXT CELL");
+				// console.log("NEXT CELL");
 				j+=1;
 			}
 			else if (j == c) {
@@ -37,14 +37,14 @@ function SprSheet (rows, columns, img, dimX, dimY, cellCnt) {
 				j = 0;
 				k += 1;
 				curLoc.y += cellY;
-				console.log("NEXT ROW");
+				// console.log("NEXT ROW");
 			}
 			else {
 				console.log("SliceSheet ERROR in Coordinate Calculation");
 				break;
 			}
 		}
-		console.log("FINISHED");
+		// console.log("FINISHED");
 	}
 
 	this.getX = function(index) {

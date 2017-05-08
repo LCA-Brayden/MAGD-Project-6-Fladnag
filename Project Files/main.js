@@ -15,11 +15,11 @@ var dayLength, currentTime, currentScore; //Gameplay
 var interBox, interBoxCheck, interCount, walkerCount, walkerMax, animTracker, animCur, mouse; //Game Control Variables
 var boxLock, gameGoing, idlePlaying, conjPlaying,spawnBox; //Control Booleans
 var towerReg; //Regions
-var fladIdle1, fladIdle2, fladConjure, walk1, walk2, walk3; //Animations
-var fladIdle1Sh, fladIdle2Sh, fladConjureSh; //Spritesheets
+var fladIdle1, fladIdle2, fladIdle3, fladIdle4, fladConjureL, fladConjureR, walk1, walk2, walk3; //Animations
+var fladIdle1Sh, fladIdle2Sh, fladIdle3Sh, fladIdle4Sh, fladConjureLSh, fladConjureRSh, walk1Sh, walk2Sh, walk3Sh; //Spritesheets
 var back, box1, box2, box3; //Static Images
 var walkers, boxes, anim; // Arrays
-var spawncolor;
+var spawncolor; 
 
 
 var engine; //Matter.js Variables
@@ -101,7 +101,7 @@ function setup() {
 
     //Functions
     matterCheck();
-    animPrep();
+    animPrep(); 	//Create and assign all image objects
 
 	engine = Engine.create(); //Matter.js setup
 	world = engine.world;
@@ -167,8 +167,6 @@ function gameControl() { //Various settings for game control/balance. Stuff like
 			boxLock = false;
 		}
 	}
-	//Walker Control
-		// Spawns and controls the number of Walkers on screen. Keeps track of walkerCount.
 
 	//Idle/Animation Control
 	switch (animCur) {
@@ -208,14 +206,27 @@ function heyListen() {
 }
 
 function animPrep() { //Loads & Retrieves SpriteSheet data for later use. Stores all data in anim[] array, via SprSheet objects.
-	fladIdle1Sh = loadImage("data/anim/fladnag_idle_sheet.png"); 		// Main Idle Loop
-	fladIdle1 = new SprSheet(10, 6, fladIdle1, 4752, 6120);
-	console.log("Slicing");
+	// fladIdle1, fladIdle2, fladIdle3, fladIdle4, fladConjureL, fladConjureR, walk1, walk2, walk3
+	// new SprSheet (rows, columns, img, dimX, dimY, cellCnt)
+	fladIdle1Sh = loadImage("data/anim/fladnag_idle_sheet.png"); 		// Main Idle
+	fladIdle1 = new SprSheet(10, 6, fladIdle1Sh, 4752, 6120, 60);
 	fladIdle1.sliceSheet(10, 6, 4752, 6120, 60);
 	fladIdle1.getTestArray(57, 57);
-	fladIdle1.getX(57);
-	fladIdle1.getY(57);
 
+	fladIdle2Sh = loadImage("data/anim/fladnag_fidget1_sheet.png"); 	// Idle Fidget 1
+	fladIdle2 = new SprSheet(10, 5, fladIdle2Sh, 3960, 6120, 50);
+	fladIdle2.sliceSheet(10, 5, 3960, 6120, 50);
+	fladIdle2.getTestArray(37, 37);
+
+	fladIdle3Sh = loadImage("data/anim/fladnag_fidget2_sheet.png"); 	// Idle Fidget 2
+	fladIdle3 = new SprSheet(6, 5, fladIdle3Sh, 3960, 3672, 29);
+	fladIdle3.sliceSheet(6, 5, 3960, 3672, 29);
+	fladIdle3.getTestArray(27, 27);
+
+	fladIdle4Sh = loadImage("data/anim/fladnag_fidget3_sheet.png"); 	// Idle Fidget 3
+	fladIdle4 = new SprSheet(5, 6, fladIdle4Sh, 4572, 3060, 30);
+	fladIdle4.sliceSheet(5, 6, 4572, 3060, 30);
+	fladIdle4.getTestArray(27, 27);
 }
 
 //Event Listener functions go here.
