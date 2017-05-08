@@ -47,13 +47,25 @@ function SprSheet (rows, columns, img, dimX, dimY, cellCnt) {
 		// console.log("FINISHED");
 	}
 
+	this.getCellCnt = function() {
+		return cellCnt;
+	}
+
+	this.getDimX = function() {
+		return dX; 
+	}
+
+	this.getDimY = function() {
+		return dY; 
+	}
+
 	this.getX = function(index) {
-		console.log("xCells["+index+"]: "+xCells[index]);
+		// console.log("xCells["+index+"]: "+xCells[index]);
 		return xCells[index];
 	}
 
 	this.getY = function(index) {
-		console.log("yCells["+index+"]: " + yCells[index]);
+		// console.log("yCells["+index+"]: " + yCells[index]);
 		return yCells[index];
 	}
 

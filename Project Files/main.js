@@ -12,13 +12,14 @@
 //Variable Initialization
 var framerate; //Settings
 var dayLength, currentTime, currentScore; //Gameplay
-var interBox, interBoxCheck, interCount, walkerCount, walkerMax, animTracker, animCur, mouse; //Game Control Variables
+var interBox, interBoxCheck, interCount, walkerCount, walkerMax, animTracker, animCur, animFrame, animDelay, mouse; //Game Control Variables
 var boxLock, gameGoing, idlePlaying, conjPlaying,spawnBox; //Control Booleans
 var towerReg; //Regions
 var fladIdle1, fladIdle2, fladIdle3, fladIdle4, fladConjureL, fladConjureR, walk1, walk2, walk3; //Animations
 var fladIdle1Sh, fladIdle2Sh, fladIdle3Sh, fladIdle4Sh, fladConjureLSh, fladConjureRSh, walk1Sh, walk2Sh, walk3Sh; //Spritesheets
 var back, box1, box2, box3; //Static Images
 var walkers, boxes, anim; // Arrays
+var fladPos, fladDim; //Fladnag Points
 var spawncolor;
 var animFrames;
 
@@ -31,23 +32,6 @@ var ground;
 var Engine = Matter.Engine,
   World = Matter.World,
   Bodies = Matter.Bodies;   // end of matter.js Variables
-
-
-function preLoad() {
-	//Fladnag
-
-	fladIdle2Sh = loadImage("data/anim/fladnag_fidget1_sheet.png");	// Fidget Animation 1
-	// fladConjure = loadImage("data/anim/fladnag_conjure1_sheet.png"); // Conjure Animation 1
-
-	// Walkers
-	// walk1 = loadImage("data/anim/walker1_sheet.png"); //Walker 1 Cycle
-	// walk2 = loadImage("data/anim/walker2_sheet.png"); //Walker 2 Cycle
-	// walk3 = loadImage("data/anim/walker3_sheet.png"); //Walker 3 Cycle
-
-
-
-	heyListen();
-}
 
 function setup() {
 	createCanvas(1020,780);
@@ -82,7 +66,11 @@ function setup() {
     walkerMax = 10; 	// Max number of NPCs on screen at once.
     animTracker = 0.0; 	// Keeps track of idle time/tracks when to play an idle animation (in theory)
     animCur = 0; 		// Keeps track of which animation is currently playing.
-    animFrames = 0; // keeps track of how many frames are left in the current animation state
+    animFr = 0; 		// Keeps track of what frame the current animation is on. 
+    animFrames = 0; 	// keeps track of how many frames are left in the current animation state
+    animDelay = 1.0; 	// Amount of frames of delay between each new animation frame 
+    fladPos = createVector(50, 50);
+    fladDim = createVector(250, 400);
     mouse = createVector(0, 0);
 
 
@@ -103,7 +91,6 @@ function setup() {
     box3 = loadImage("data/box3.png");
 
     //Functions
-    matterCheck();
     animPrep(); 	//Create and assign all image objects
 
 	engine = Engine.create(); //Matter.js setup
@@ -115,9 +102,10 @@ function setup() {
 
 function draw() {
   if(dayLength > frameCount){
-	background(back, 100);
+	background(back, 75);
 
-	//Draw Fladnag here.
+	image(fladIdle1Sh, mouse.x, mouse.y, fladPos.x, fladPos.y, fladDim.x, fladDim.y, 100, 100);
+	animDraw(fladIdle1, fladIdle1Sh, fladPos.x, fladPos.y, fladDim.x, fladDim.y);
 
 	gameTimer();
 	gameControl();
@@ -172,9 +160,10 @@ function gameControl() { //Various settings for game control/balance. Stuff like
 		}
 	}
 
-	//Idle/Animation Control
+	//Idle/Animation Control: Fladnag
 	switch (animCur) {
 		case 0: //Idle 1 Animation
+				// animDraw(fladIdle1, fladIdle1Sh, fladPos.x, fladPos.y, fladDim.x, fladDim.y);
 				break;
 		case 1: //Idle 2 Animation
 				break;
@@ -204,6 +193,28 @@ function animState(){
   animFrames--;
 }
 
+function animDraw(animObj, animSheet, destX, destY, destW, destH) {
+	var frames = animObj.getCellCnt();
+	// var dX = animObj.getDimX()/3; 
+	// var dY = animObj.getDimY()/3;
+	var dX = 100;
+	var dY = 100;
+	push();
+	imageMode(CORNER);
+	image(animSheet, animObj.getX(animFr), animObj.getY(animFr), dX, dY, destX, destY, destW, destH);
+	
+	pop();
+
+/*	if (animFr < frames)
+		// && frameCount % animDelay == 0) 
+	{
+		animFr++;
+	}
+	if (animFr == frames) {
+		animFr = 0;
+	}*/
+}
+
 function gameMouse() { //Contains all mouse control functions.
 	mouse.x = mouseX;
 	mouse.y = mouseY;
@@ -231,9 +242,9 @@ function heyListen() {
 function animPrep() { //Loads & Retrieves SpriteSheet data for later use. Stores all data in anim[] array, via SprSheet objects.
 	// fladIdle1, fladIdle2, fladIdle3, fladIdle4, fladConjureL, fladConjureR, walk1, walk2, walk3
 	// new SprSheet (rows, columns, img, dimX, dimY, cellCnt)
-	fladIdle1Sh = loadImage("data/anim/fladnag_idle_sheet.png"); 		// Main Idle
-	fladIdle1 = new SprSheet(10, 6, fladIdle1Sh, 4752, 6120, 60);
-	fladIdle1.sliceSheet(10, 6, 4752, 6120, 60);
+	fladIdle1Sh = loadImage("data/anim/fladnag_idle_sheet_small.png"); 		// Main Idle
+	fladIdle1 = new SprSheet(10, 6, fladIdle1Sh, 1200, 1545, 60);
+	fladIdle1.sliceSheet(10, 6, 1200, 1545, 60);
 	fladIdle1.getTestArray(57, 57);
 
 	fladIdle2Sh = loadImage("data/anim/fladnag_fidget1_sheet.png"); 	// Idle Fidget 1
@@ -278,19 +289,6 @@ function gameResume() { //Turns on gameGoing, resuming all gameplay. Frees all o
 function gameEnd() { // Turns off booleans, updateSprites, and stops all counting.
 	gameGoing = false;
 	updateSprites(false);
-}
-
-//Collision Detection functions go here.
-function matterCheck() { //Check if Walker and Box objects can collide, make sure Matter.js is functioning properly. If not, return an error and ask for reload.
-
-}
-
-function boxHit(which) { //Depending on which Walker was hit, add Walker's point value to the total score.
-
-}
-
-function edgeHit(which) { //If a walker makes it to the edge of the screen (the one it doesn't start at), delete Walker.
-
 }
 
 function detectCollision(){
@@ -341,6 +339,7 @@ function showWalker(){
   }
 
   for(i = 0; i<walkers.length;i++){
+  	walkers[i].show();
     switch(walkers[i].t){ // draw the image for the walkers at walkers[i].positionX() , walkers[i].positionY() the width and height are walkers[i].w , walkers[i].h
       case 0:
 
