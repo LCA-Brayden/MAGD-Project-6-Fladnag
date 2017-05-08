@@ -114,11 +114,10 @@ function setup() {
 }
 
 function draw() {
-  console.log(int(random(1,3)));
   if(dayLength > frameCount){
 	background(back, 100);
 
-	//Draw Fladnag here. 
+	//Draw Fladnag here.
 
 	gameTimer();
 	gameControl();
@@ -192,16 +191,16 @@ function animState(){
   if(animCur == 0 && animFrames ==0){
     animCur = int(random(1,3));
     if(animCur == 1){
-      animFrames == ;
+      animFrames == 999;  //just a filler variable
     }
     if(animCur == 2){
-      animFrames == ;
+      animFrames == 999; //just a filler variable
     }
   }
 
    if(animFrames == 0){
     animCur = 0;
-    animFrames == ;
+    animFrames == 999; //just a filler variable
   }
 
   animFrames--;
@@ -383,4 +382,3 @@ function createWalker() {
     walkers.push(new Walker(width+20,height-100,40,100,-1,int(random(0,3))));
   }
 }
-
