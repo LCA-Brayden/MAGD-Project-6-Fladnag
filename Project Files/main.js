@@ -90,6 +90,8 @@ function setup() {
     box2 = loadImage("data/box2.png");
     box3 = loadImage("data/box3.png");
 
+
+
     //Functions
     animPrep(); 	//Create and assign all image objects
 
@@ -127,7 +129,7 @@ function draw() {
   push();
   fill(255,spawnColor,spawnColor,125)
   rectMode(CENTER);
-  rect(mouseX,mouseY,80,80);
+  rect(mouseX,mouseY,60, 60);
   pop();
   }
   else{
@@ -317,13 +319,13 @@ function showboxes(){
   for (var i = 0; i < boxes.length; i++){
     switch(boxes[i].t){     // draw the image for the box at boxes[i].positionX() , boxes[i].positionY() the width and height are boxes[i].w , boxes[i].h
       case 0:
-        image(box1, boxes[i].positionX()-(boxes[i].w/2),  boxes[i].positionY()-(boxes[i].h/2));
+        image(box1, boxes[i].positionX()-(boxes[i].w/2),  boxes[i].positionY()-(boxes[i].h/2),60,60);
         break;
       case 1:
-        image(box2, boxes[i].positionX()-(boxes[i].w/2),  boxes[i].positionY()-(boxes[i].h/2));
+        image(box2, boxes[i].positionX()-(boxes[i].w/2),  boxes[i].positionY()-(boxes[i].h/2),60,60);
         break;
       case 2:
-        image(box3, boxes[i].positionX()-(boxes[i].w/2),  boxes[i].positionY()-(boxes[i].h/2));
+        image(box3, boxes[i].positionX()-(boxes[i].w/2),  boxes[i].positionY()-(boxes[i].h/2),60,60);
         break;
     }
   }
@@ -378,7 +380,7 @@ function boxCheck(){
 
 function mousePressed() {
 	if(interBoxCheck == 0 && spawnBox){
-  	boxes.push(new Box(mouseX, mouseY, 80,80,int(random(0,3))));
+  	boxes.push(new Box(mouseX, mouseY, 60, 60,int(random(0,3))));
 		interBoxCheck = interBox*framerate;
 	}
 }
