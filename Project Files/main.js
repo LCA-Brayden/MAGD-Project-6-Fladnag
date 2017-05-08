@@ -68,9 +68,8 @@ function setup() {
     animCur = 0; 		// Keeps track of which animation is currently playing.
     animFr = 0; 		// Keeps track of what frame the current animation is on. 
     animFrames = 0; 	// keeps track of how many frames are left in the current animation state
-    animDelay = 1.0; 	// Amount of frames of delay between each new animation frame 
-    fladPos = createVector(50, 50);
-    fladDim = createVector(250, 400);
+    animDelay = 5.0; 	// Amount of frames of delay between each new animation frame 
+    fladPos = createVector(width/3+40, 35);
     mouse = createVector(0, 0);
 
 
@@ -106,8 +105,8 @@ function draw() {
   if(dayLength > frameCount){
 	background(back, 75);
 
-	image(fladIdle1Sh, mouse.x, mouse.y, fladPos.x, fladPos.y, fladDim.x, fladDim.y, 100, 100);
-	animDraw(fladIdle1, fladIdle1Sh, fladPos.x, fladPos.y, fladDim.x, fladDim.y);
+	// Debug Spritesheet Display
+	//image(fladIdle1Sh, 0, 0);
 
 	gameTimer();
 	gameControl();
@@ -165,7 +164,7 @@ function gameControl() { //Various settings for game control/balance. Stuff like
 	//Idle/Animation Control: Fladnag
 	switch (animCur) {
 		case 0: //Idle 1 Animation
-				// animDraw(fladIdle1, fladIdle1Sh, fladPos.x, fladPos.y, fladDim.x, fladDim.y);
+			animDraw(fladIdle1, fladIdle1Sh, fladPos.x, fladPos.y);
 				break;
 		case 1: //Idle 2 Animation
 				break;
@@ -195,39 +194,33 @@ function animState(){
   animFrames--;
 }
 
-function animDraw(animObj, animSheet, destX, destY, destW, destH) {
+function animDraw(animObj, animSheet, destX, destY) {
 	var frames = animObj.getCellCnt();
-	// var dX = animObj.getDimX()/3; 
-	// var dY = animObj.getDimY()/3;
-	var dX = 100;
-	var dY = 100;
+	var dX = animObj.getDimX(); 
+	var dY = animObj.getDimY();
+
 	push();
 	imageMode(CORNER);
-	image(animSheet, animObj.getX(animFr), animObj.getY(animFr), dX, dY, destX, destY, destW, destH);
-	
+	image(animSheet, animObj.getX(animFr), animObj.getY(animFr), dX, dY, destX, destY, dX, dY);
+
+/*//Debug SpriteSheet
+	stroke(255, 0, 0);
+	rect(animObj.getX(animFr), animObj.getY(animFr), dX, dY);*/
 	pop();
 
-/*	if (animFr < frames)
-		// && frameCount % animDelay == 0) 
+	if (animFr < frames
+		&& frameCount % animDelay == 0) 
 	{
 		animFr++;
 	}
 	if (animFr == frames) {
 		animFr = 0;
-	}*/
+	}
 }
 
 function gameMouse() { //Contains all mouse control functions.
 	mouse.x = mouseX;
 	mouse.y = mouseY;
-
-	if (mouseDown && !!(mouse.x <= towerReg.x && mouse.x >= towerReg.w && //Not sure if !! is the right tool to use here, to convert this statement into a boolean. - Brayden
-					  mouse.y <= towerReg.y && mouse.y >= towerReg.h) == true) //If the mouse isn't inside of the region set aside for the tower and/or UI, do this:
-	{
-		//Create box at mouse.x & mouse.y.
-		//Wait for 0.5 seconds
-		//Then turn on gravity
-	}
 }
 
 function animate(toAnim, x, y) { // Display animation on demand, on location.
@@ -244,15 +237,15 @@ function heyListen() {
 function animPrep() { //Loads & Retrieves SpriteSheet data for later use. Stores all data in anim[] array, via SprSheet objects.
 	// fladIdle1, fladIdle2, fladIdle3, fladIdle4, fladConjureL, fladConjureR, walk1, walk2, walk3
 	// new SprSheet (rows, columns, img, dimX, dimY, cellCnt)
-	fladIdle1Sh = loadImage("data/anim/fladnag_idle_sheet_small.png"); 		// Main Idle
+	fladIdle1Sh = loadImage("data/anim/fladnag_idle_sheet.png"); 		// Main Idle
 	fladIdle1 = new SprSheet(10, 6, fladIdle1Sh, 1200, 1545, 60);
 	fladIdle1.sliceSheet(10, 6, 1200, 1545, 60);
-	fladIdle1.getTestArray(57, 57);
+	fladIdle1.getTestArray(6, 6);
 
 	fladIdle2Sh = loadImage("data/anim/fladnag_fidget1_sheet.png"); 	// Idle Fidget 1
 	fladIdle2 = new SprSheet(10, 5, fladIdle2Sh, 3960, 6120, 50);
 	fladIdle2.sliceSheet(10, 5, 3960, 6120, 50);
-	fladIdle2.getTestArray(37, 37);
+	fladIdle2.getTestArray(5, 5);
 
 	fladIdle3Sh = loadImage("data/anim/fladnag_fidget2_sheet.png"); 	// Idle Fidget 2
 	fladIdle3 = new SprSheet(6, 5, fladIdle3Sh, 3960, 3672, 29);
