@@ -30,6 +30,7 @@ var world;
 var boxes = [];
 var walkers = [];
 var ground;
+var count;
 var Engine = Matter.Engine,
   World = Matter.World,
   Bodies = Matter.Bodies;   // end of matter.js Variables
@@ -69,9 +70,10 @@ function setup() {
     animCur = 0; 		// Keeps track of which animation is currently playing.
     animFr = 0; 		// Keeps track of what frame the current animation is on.
     animFrames = 0; 	// keeps track of how many frames are left in the current animation state
-    animDelay = 5.0; 	// Amount of frames of delay between each new animation frame 
+    animDelay = 5.0; 	// Amount of frames of delay between each new animation frame
     animFid = 0.0; 		// Fidget Timer
-    animFidTrig = 2; 	// # Of Seconds before Fidget animation plays. 
+    animFidTrig = 2; 	// # Of Seconds before Fidget animation plays.
+    count = 0;
 
     fladPos = createVector(width/3+40, 35);
 
@@ -159,7 +161,7 @@ function gameControl() { //Various settings for game control/balance. Stuff like
 	}
 
 	if (animCur == 0 && frameCount % 60 == 0) {
-		animFid += 1; 
+		animFid += 1;
 	}
 
 	if (animFid == animFidTrig) {
@@ -212,8 +214,7 @@ function animDraw(animObj, animSheet, destX, destY) {
 
 	pop();
 
-/*	if (animFr < frames)
-		// && frameCount % animDelay == 0)
+	if (animFr < frames && frameCount % animDelay == 0)
 
 	var dX = animObj.getDimX();
 	var dY = animObj.getDimY();
@@ -378,55 +379,64 @@ function showWalker(){
   }
 
   for(i = 0; i<walkers.length;i++){
-  	walkers[i].show();
+    if(frameCount%14 == 0){
+      count++;
+    }
+    if(count == 5){
+      count =0;
+    }
+
     switch(walkers[i].t){ // draw the image for the walkers at walkers[i].positionX() , walkers[i].positionY() the width and height are walkers[i].w , walkers[i].h
       case 0:
-        if(frameCount%5 == 0){
+        if(count == 0){
           image(child0, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
         }
-        if(frameCount%5 == 1){
+        if(count == 1){
           image(child1, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
         }
-        if(frameCount%5 == 2){
+        if(count == 2){
           image(child2, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
         }
-        if(frameCount%5 == 3){
+        if(count == 3){
           image(child3, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
         }
-        if(frameCount%5 == 4){
+        if(count == 4){
           image(child4, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
         }
         break;
 
       case 1:
-      if(frameCount%5 == 0){
+      if(count == 0){
         image(woman0, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
       }
-      if(frameCount%5 == 1){
+      if(count == 1){
         image(woman1, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
       }
-      if(frameCount%5 == 2){
+      if(count == 2){
         image(woman2, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
       }
-      if(frameCount%5 == 3){
+      if(count == 3){
+        image(woman3, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
+      }
+      if(count == 4){
         image(woman3, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
       }
         break;
 
       case 2:
-      if(frameCount%5 == 0){
+      if(count == 0){
         image(man0, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
       }
-      if(frameCount%5 == 1){
+      if(count == 1){
         image(man1, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
       }
-      if(frameCount%5 == 2){
+      if(count == 2){
         image(man2, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
       }
-      if(frameCount%5 == 3){
+      if(count == 3){
         image(man3, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
       }
-      if(frameCount%5 == 4){
+      if(count == 4){
         image(man4, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
       }
         break;
@@ -444,7 +454,7 @@ function boxTimer(){
 
 
 function boxCheck(){
-  if(mouseY >= 590 ){
+  if(mouseY >= height/2 ){
     spawnColor = 0;
     spawnBox = false;
   }
