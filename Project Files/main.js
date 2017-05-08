@@ -88,29 +88,6 @@ function setup() {
     //Gameplay Regions
     towerReg = createVector();
 
-    //Images
-    back = loadImage("data/background1.png"); //Background Image
-    box1 = loadImage("data/box1.png");
-    box2 = loadImage("data/box2.png");
-    box3 = loadImage("data/box3.png");
-
-    child0 = loadImage("data/anim/Passersby/Child/Child0.png");
-    child1 = loadImage("data/anim/Passersby/Child/Child1.png");
-    child2 = loadImage("data/anim/Passersby/Child/Child2.png");
-    child3 = loadImage("data/anim/Passersby/Child/Child3.png");
-    child4 = loadImage("data/anim/Passersby/Child/Child4.png");
-
-    woman0 = loadImage("data/anim/Passersby/Female/Female1.png");
-    woman1 = loadImage("data/anim/Passersby/Female/Female2.png");
-    woman2 = loadImage("data/anim/Passersby/Female/Female3.png");
-    woman3 = loadImage("data/anim/Passersby/Female/Female4.png");
-
-    man0 = loadImage("data/anim/Passersby/Male/Male1.png");
-    man1 = loadImage("data/anim/Passersby/Male/Male2.png");
-    man2 = loadImage("data/anim/Passersby/Male/Male3.png");
-    man3 = loadImage("data/anim/Passersby/Male/Male4.png");
-    man4 = loadImage("data/anim/Passersby/Male/Male5.png");
-
     //Functions
     animPrep(); 	//Create and assign all image objects
 
@@ -188,7 +165,7 @@ function gameControl() { //Various settings for game control/balance. Stuff like
 	if (animFid == animFidTrig) {
 		animFr = 0;
 		animCur = int(random(1,3));
-		// if (animFr )
+
 	}
 
 	//Idle/Animation Control: Fladnag
@@ -227,14 +204,11 @@ function animState(){
 
 function animDraw(animObj, animSheet, destX, destY) {
 	var frames = animObj.getCellCnt();
-
-	// var dX = animObj.getDimX()/3;
-	// var dY = animObj.getDimY()/3;
-	var dX = 100;
-	var dY = 100;
+	var dX = animObj.getDimX();
+	var dY = animObj.getDimY();
 	push();
 	imageMode(CORNER);
-	image(animSheet, animObj.getX(animFr), animObj.getY(animFr), dX, dY, destX, destY, destW, destH);
+	image(animSheet, animObj.getX(animFr), animObj.getY(animFr), dX, dY, destX, destY, dX, dY);
 
 	pop();
 
@@ -248,7 +222,7 @@ function animDraw(animObj, animSheet, destX, destY) {
 	imageMode(CORNER);
 	image(animSheet, animObj.getX(animFr), animObj.getY(animFr), dX, dY, destX, destY, dX, dY);
 
-/*//Debug SpriteSheet
+/*Debug SpriteSheet
 	stroke(255, 0, 0);
 	rect(animObj.getX(animFr), animObj.getY(animFr), dX, dY);*/
 	pop();
@@ -298,6 +272,29 @@ function animPrep() { //Loads & Retrieves SpriteSheet data for later use. Stores
 	fladIdle4 = new SprSheet(5, 6, fladIdle4Sh, 4572, 3060, 30);
 	fladIdle4.sliceSheet(5, 6, 4572, 3060, 30);
 	fladIdle4.getTestArray(27, 27);
+
+	//Images
+    back = loadImage("data/background1.png"); //Background Image
+    box1 = loadImage("data/box1.png");
+    box2 = loadImage("data/box2.png");
+    box3 = loadImage("data/box3.png");
+
+    child0 = loadImage("data/anim/Passersby/Child/Child0.png");
+    child1 = loadImage("data/anim/Passersby/Child/Child1.png");
+    child2 = loadImage("data/anim/Passersby/Child/Child2.png");
+    child3 = loadImage("data/anim/Passersby/Child/Child3.png");
+    child4 = loadImage("data/anim/Passersby/Child/Child4.png");
+
+    woman0 = loadImage("data/anim/Passersby/Female/Female1.png");
+    woman1 = loadImage("data/anim/Passersby/Female/Female2.png");
+    woman2 = loadImage("data/anim/Passersby/Female/Female3.png");
+    woman3 = loadImage("data/anim/Passersby/Female/Female4.png");
+
+    man0 = loadImage("data/anim/Passersby/Male/Male1.png");
+    man1 = loadImage("data/anim/Passersby/Male/Male2.png");
+    man2 = loadImage("data/anim/Passersby/Male/Male3.png");
+    man3 = loadImage("data/anim/Passersby/Male/Male4.png");
+    man4 = loadImage("data/anim/Passersby/Male/Male5.png");
 }
 
 //Event Listener functions go here.
