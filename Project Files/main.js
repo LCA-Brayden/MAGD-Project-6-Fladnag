@@ -101,6 +101,10 @@ function setup() {
     box1 = loadImage("data/box1.png");
     box2 = loadImage("data/box2.png");
     box3 = loadImage("data/box3.png");
+    box1.resize(60, 60);
+    box2.resize(60, 60);
+    box3.resize(60, 60);
+
 
     //Functions
     matterCheck();
@@ -139,7 +143,7 @@ function draw() {
   push();
   fill(255,spawnColor,spawnColor,125)
   rectMode(CENTER);
-  rect(mouseX,mouseY,80,80);
+  rect(mouseX,mouseY,60, 60);
   pop();
   }
   else{
@@ -379,7 +383,7 @@ function boxCheck(){
 
 function mousePressed() {
 	if(interBoxCheck == 0 && spawnBox){
-  	boxes.push(new Box(mouseX, mouseY, 80,80,int(random(0,3))));
+  	boxes.push(new Box(mouseX, mouseY, 60, 60,int(random(0,3))));
 		interBoxCheck = interBox*framerate;
 	}
 }
