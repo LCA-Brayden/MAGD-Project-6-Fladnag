@@ -13,12 +13,14 @@
 var framerate; //Settings
 var dayLength, currentTime, currentScore; //Gameplay
 var interBox, interBoxCheck, interCount, walkerCount, walkerMax, animTracker, animCur, mouse; //Game Control Variables
-var boxLock, gameGoing, idlePlaying, conjPlaying; //Control Booleans
+var boxLock, gameGoing, idlePlaying, conjPlaying,spawnBox; //Control Booleans
 var towerReg; //Regions
 var fladIdle1, fladIdle2, fladConjure, walk1, walk2, walk3; //Animations
 var fladIdle1Sh, fladIdle2Sh, fladConjureSh; //Spritesheets
 var back, box1, box2, box3; //Static Images
 var walkers, boxes, anim; // Arrays
+var spawncolor;
+
 
 var engine; //Matter.js Variables
 var world;
@@ -70,11 +72,11 @@ function setup() {
     updateSprites(true); // Can pause sprites + animations.
 
     //Variable Declarations
-    dayLength = 120.0; 	// 2 Minutes - length of playtime in seconds.
+    dayLength = 7200.0; // 2 Minutes - length of playtime in seconds.
     currentTime = 0.0; 	// Counts up to dayLength - currentt play session's length in seconds.
     currentScore = 0; 	// Keeps track of score.
-    interBox = 2.0; 	// Buffer time in seconds between each box drop.
-	interBoxCheck = 0; //Will spawn a box when interBoxCheck == 0 if the mouse is pressed.
+    interBox = 1.0; 	// Buffer time in seconds between each box drop.
+	  interBoxCheck = 0; //Will spawn a box when interBoxCheck == 0 if the mouse is pressed.
     walkerCount = 0;	// Keeps track of number of NPCs on screen.
     walkerMax = 10; 	// Max number of NPCs on screen at once.
     animTracker = 0.0; 	// Keeps track of idle time/tracks when to play an idle animation (in theory)
@@ -86,6 +88,7 @@ function setup() {
     gameGoing = false;	// When on, currentTime counts up, and play is in session. (for score/game control)
     idlePlaying = false;// When on, an Idle animation is playing.
     conjPlaying = false;// When on, the Conjure animation is playing. (used to prevent animation overlap)
+    spawnBox = true; // changes to false when the mouse us unfairly close to the walkers.
 
     //Gameplay Regions
     towerReg = createVector();
@@ -103,9 +106,12 @@ function setup() {
 	engine = Engine.create(); //Matter.js setup
 	world = engine.world;
 	var options = {isStatic: true}//end of matter.js setup
+
+  spawnColor = 255; // color of the transparent box that indicates where a box will spawn
 }
 
 function draw() {
+  if(dayLength > frameCount){
 	background(back, 100);
 
 	//Draw Fladnag here. 
@@ -114,13 +120,27 @@ function draw() {
 	gameControl();
 	gameMouse();
 	showboxes();
-  	showWalker();
+  showWalker();
 	boxTimer();
+  boxCheck();
 
-  if(boxes.length >0 && walkers.length > 0){
+  if(boxes.length > 0 && walkers.length > 0){
     detectCollision();
   }
 
+  if(frameCount % 90 ==0){
+    createWalker();
+  }
+
+  push();
+  fill(255,spawnColor,spawnColor,125)
+  rectMode(CENTER);
+  rect(mouseX,mouseY,80,80);
+  pop();
+  }
+  else{
+    background(0);
+  }
 }
 
 function gameTimer() { //Constantly count up from current time until it reaches dayLength. Then, stop the game.
@@ -241,33 +261,17 @@ function edgeHit(which) { //If a walker makes it to the edge of the screen (the 
 
 function detectCollision(){
   for (var i = 0; i < boxes.length; i++){
-  		console.log("In detect");
     for (var j = 0; j < walkers.length; j++){
-
-       if(boxes[i].positionX+(boxes[i].w/2) <= walkers[j].positionX()-(walkers[j].w/2) && boxes[i].positionX-(boxes[i].w/2) >= walkers[j].positionX()+(walkers[j].w/2)){console.log(true); }
-      // if(boxes[i].positionY+(boxes[i].h/2) >= walkers[j].positionY()-(walkers[j].h/2)){console.log(true);}
-      // if(boxes[i].positionY-(boxes[i].h/2) <= walkers[j].positionY()+(walkers[j].h/2)){console.log(true);}
-
-      if(boxes[i].positionX()-(boxes[i].w/2)> walkers[j].positionX()-(walkers[j].w/2)
-      && boxes[i].positionX()+(boxes[i].w/2)< walkers[j].positionX()+(walkers[j].w/2)
-      && boxes[i].positionY()-(boxes[i].h/2)> walkers[j].positionY()-(walkers[j].h/2)
-      && boxes[i].positionY()+(boxes[i].h/2)< walkers[j].positionY()+(walkers[j].h/2)){
-      	console.log("Collision");
-        walkers.splice(i, 1);
+      if(boxes[i].positionX()-(boxes[i].w/2) <= walkers[j].positionX()+(walkers[j].w/2)
+      && boxes[i].positionX()+(boxes[i].w/2) >= walkers[j].positionX()-(walkers[j].w/2)
+      && boxes[i].positionY()+(boxes[i].h/2) >= walkers[j].positionY()-(walkers[j].h/2)
+      && boxes[i].positionY()-(boxes[i].h/2) <= walkers[j].positionY()+(walkers[j].h/2)){
+        walkers.splice(j, 1);
         j--;
       }
     }
-  }
-
-
-      // if(boxes[i].positionX+(boxes[i].w/2) >= walkers[j].positionX()-(walkers[j].w/2) && boxes[i].positionX-(boxes[i].w/2) <= walkers[j].positionX()+(walkers[j].w/2)
-      // && boxes[i].positionY+(boxes[i].h/2) >= walkers[j].positionY()-(walkers[j].h/2) && boxes[i].positionY-(boxes[i].h/2) <= walkers[j].positionY()+(walkers[j].h/2)){
-      //   // walkers.splice(j, 1);
-      //   // j--;
-      //  console.log(true);
-      // }
-
-    }
+ }
+}
 
 function showboxes(){
 	Engine.update(engine);
@@ -278,14 +282,23 @@ function showboxes(){
       i--;
     }
   }
-  for (var i = 0; i < boxes.length; i++)
-	{ boxes[i].show();}
-}
+  for (var i = 0; i < boxes.length; i++){
+    boxes[i].show();
 
-function boxTimer(){
-	if(interBoxCheck > 0){
-		interBoxCheck--;
-	}
+    switch(boxes[i].t){     // draw the image for the box at boxes[i].positionX() , boxes[i].positionY() the width and height are boxes[i].w , boxes[i].h
+      case 0:
+        image(box1, boxes[i].positionX()-(boxes[i].w/2),  boxes[i].positionY()-(boxes[i].h/2));
+        break;
+
+      case 1:
+        image(box2, boxes[i].positionX()-(boxes[i].w/2),  boxes[i].positionY()-(boxes[i].h/2));
+        break;
+
+      case 2:
+        image(box3, boxes[i].positionX()-(boxes[i].w/2),  boxes[i].positionY()-(boxes[i].h/2));
+        break;
+    }
+  }
 }
 
 function showWalker(){
@@ -298,26 +311,58 @@ function showWalker(){
   }
 
   for(i = 0; i<walkers.length;i++){
-
     walkers[i].show();
+
+    switch(walkers[i].t){ // draw the image for the walkers at walkers[i].positionX() , walkers[i].positionY() the width and height are walkers[i].w , walkers[i].h
+      case 0:
+
+        break;
+
+      case 1:
+
+        break;
+
+      case 2:
+
+        break;
+    }
+
   }
 }
 
+function boxTimer(){
+	if(interBoxCheck > 0){
+		interBoxCheck--;
+	}
+}
+
+
+
+function boxCheck(){
+  if(mouseY >= 590 ){
+    spawnColor = 0;
+    spawnBox = false;
+  }
+  else {
+    spawnColor = 255;
+    spawnBox = true;
+  }
+}
 
 function mousePressed() {
-	if(interBoxCheck == 0){
-  	boxes.push(new Box(mouseX, mouseY, 40,40));
+	if(interBoxCheck == 0 && spawnBox){
+  	boxes.push(new Box(mouseX, mouseY, 80,80,int(random(0,3))));
 		interBoxCheck = interBox*framerate;
 	}
 }
 
-function keyPressed(){
-  var check = int(random(0,2));
- if(check == 0){
-    walkers.push(new Walker(-20,height-100,40,100,1));
- }
- if(check == 1){
-   walkers.push(new Walker(width+20,height-100,40,100,-1));
- }
+function createWalker() {
+	var check = int(random(0,2));
+  if(check == 0){
+    walkers.push(new Walker(-20,height-100,40,100,1,int(random(0,3))));
+  }
+  if(check == 1){
+    walkers.push(new Walker(width+20,height-100,40,100,-1,int(random(0,3))));
+  }
 }
 

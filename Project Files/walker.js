@@ -1,14 +1,14 @@
 
 
-function Walker(x,y,w,h,d) {
-  var spd = random(2,5);
+function Walker(x,y,w,h,d,t) {
+  var spd = random(1,5);
   var isOnScreen = true;
   this.y = y;
   this.w = w;
   this.h = h;
   this.x = x;
   this.d = d;
-
+  this.t = t;
   this.update = function(){
     if(isOnScreen)
     this.x += (d*spd);
