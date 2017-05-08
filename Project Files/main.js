@@ -22,8 +22,9 @@ var walkers, boxes; // Arrays
 var fladPos, fladDim; //Fladnag Points
 var spawncolor;
 var animFrames;
-
-
+var child0,child1,child2,child3,child4; //animations states of the child
+var woman0,woman1,woman2,woman3; //animation states of the woman
+var man0,man1,man2,man3,man4; //animation states of the man
 var engine; //Matter.js Variables
 var world;
 var boxes = [];
@@ -66,12 +67,14 @@ function setup() {
     walkerMax = 10; 	// Max number of NPCs on screen at once.
     animTracker = 0.0; 	// Keeps track of idle time/tracks when to play an idle animation (in theory)
     animCur = 0; 		// Keeps track of which animation is currently playing.
-    animFr = 0; 		// Keeps track of what frame the current animation is on. 
+    animFr = 0; 		// Keeps track of what frame the current animation is on.
     animFrames = 0; 	// keeps track of how many frames are left in the current animation state
     animDelay = 5.0; 	// Amount of frames of delay between each new animation frame 
     animFid = 0.0; 		// Fidget Timer
     animFidTrig = 2; 	// # Of Seconds before Fidget animation plays. 
+
     fladPos = createVector(width/3+40, 35);
+
     mouse = createVector(0, 0);
 
 
@@ -91,7 +94,22 @@ function setup() {
     box2 = loadImage("data/box2.png");
     box3 = loadImage("data/box3.png");
 
+    child0 = loadImage("data/anim/Passersby/Child/Child0.png");
+    child1 = loadImage("data/anim/Passersby/Child/Child1.png");
+    child2 = loadImage("data/anim/Passersby/Child/Child2.png");
+    child3 = loadImage("data/anim/Passersby/Child/Child3.png");
+    child4 = loadImage("data/anim/Passersby/Child/Child4.png");
 
+    woman0 = loadImage("data/anim/Passersby/Female/Female1.png");
+    woman1 = loadImage("data/anim/Passersby/Female/Female2.png");
+    woman2 = loadImage("data/anim/Passersby/Female/Female3.png");
+    woman3 = loadImage("data/anim/Passersby/Female/Female4.png");
+
+    man0 = loadImage("data/anim/Passersby/Male/Male1.png");
+    man1 = loadImage("data/anim/Passersby/Male/Male2.png");
+    man2 = loadImage("data/anim/Passersby/Male/Male3.png");
+    man3 = loadImage("data/anim/Passersby/Male/Male4.png");
+    man4 = loadImage("data/anim/Passersby/Male/Male5.png");
 
     //Functions
     animPrep(); 	//Create and assign all image objects
@@ -209,7 +227,21 @@ function animState(){
 
 function animDraw(animObj, animSheet, destX, destY) {
 	var frames = animObj.getCellCnt();
-	var dX = animObj.getDimX(); 
+
+	// var dX = animObj.getDimX()/3;
+	// var dY = animObj.getDimY()/3;
+	var dX = 100;
+	var dY = 100;
+	push();
+	imageMode(CORNER);
+	image(animSheet, animObj.getX(animFr), animObj.getY(animFr), dX, dY, destX, destY, destW, destH);
+
+	pop();
+
+/*	if (animFr < frames)
+		// && frameCount % animDelay == 0)
+
+	var dX = animObj.getDimX();
 	var dY = animObj.getDimY();
 
 	push();
@@ -222,7 +254,7 @@ function animDraw(animObj, animSheet, destX, destY) {
 	pop();
 
 	if (animFr < frames
-		&& frameCount % animDelay == 0) 
+		&& frameCount % animDelay == 0)
 	{
 		animFr++;
 	}
@@ -236,10 +268,7 @@ function gameMouse() { //Contains all mouse control functions.
 	mouse.y = mouseY;
 }
 
-function animate(toAnim, x, y) { // Display animation on demand, on location.
-	//animation(anim, x, y);
-	animation(toAnim, x, y);
-}
+
 
 function heyListen() {
 	//Any Event Listeners we might want go here.
@@ -337,6 +366,11 @@ function showboxes(){
   }
 }
 
+function animateWalkers(){
+
+
+}
+
 function showWalker(){
   for (var i = 0; i < walkers.length; i++) {
     walkers[i].update();
@@ -350,15 +384,54 @@ function showWalker(){
   	walkers[i].show();
     switch(walkers[i].t){ // draw the image for the walkers at walkers[i].positionX() , walkers[i].positionY() the width and height are walkers[i].w , walkers[i].h
       case 0:
-
+        if(frameCount%5 == 0){
+          image(child0, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
+        }
+        if(frameCount%5 == 1){
+          image(child1, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
+        }
+        if(frameCount%5 == 2){
+          image(child2, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
+        }
+        if(frameCount%5 == 3){
+          image(child3, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
+        }
+        if(frameCount%5 == 4){
+          image(child4, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
+        }
         break;
 
       case 1:
-
+      if(frameCount%5 == 0){
+        image(woman0, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
+      }
+      if(frameCount%5 == 1){
+        image(woman1, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
+      }
+      if(frameCount%5 == 2){
+        image(woman2, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
+      }
+      if(frameCount%5 == 3){
+        image(woman3, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
+      }
         break;
 
       case 2:
-
+      if(frameCount%5 == 0){
+        image(man0, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
+      }
+      if(frameCount%5 == 1){
+        image(man1, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
+      }
+      if(frameCount%5 == 2){
+        image(man2, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
+      }
+      if(frameCount%5 == 3){
+        image(man3, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
+      }
+      if(frameCount%5 == 4){
+        image(man4, walkers[i].positionX()-(walkers[i].w/2),  walkers[i].positionY()-(walkers[i].h/2),80,100);
+      }
         break;
     }
 
@@ -394,9 +467,9 @@ function mousePressed() {
 function createWalker() {
 	var check = int(random(0,2));
   if(check == 0){
-    walkers.push(new Walker(-20,height-100,40,100,1,int(random(0,3))));
+    walkers.push(new Walker(-20,height-100,80,100,1,int(random(0,3))));
   }
   if(check == 1){
-    walkers.push(new Walker(width+20,height-100,40,100,-1,int(random(0,3))));
+    walkers.push(new Walker(width+20,height-100,80,100,-1,int(random(0,3))));
   }
 }
