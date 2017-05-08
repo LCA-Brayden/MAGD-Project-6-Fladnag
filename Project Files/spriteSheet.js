@@ -2,16 +2,16 @@ function SprSheet (rows, columns, img, dimX, dimY, cellCnt) {
 	var r = rows;
 	var c = columns;
 	var src = img;
-	var dX = dimX;
-	var dY = dimY;
+	var dX = dimX/c;
+	var dY = dimY/r;
 	var cellCnt; 
 
 	var xCells = [];
 	var yCells = [];
 
 	this.sliceSheet = function(r, c, dX, dY, cellCnt) {
-		var cellX = dX/r; 
-		var cellY = dY/c;
+		var cellX = dX/c; 
+		var cellY = dY/r;
 		var curLoc = createVector(0,0);
 		// console.log("dX: " + dX + " | dY: " + dY);
 		// console.log("cellX: " + cellX + " | cellY: " + cellY);
@@ -25,12 +25,11 @@ function SprSheet (rows, columns, img, dimX, dimY, cellCnt) {
 			// console.log("i: " + i);
 			xCells.push(curLoc.x); 
 			yCells.push(curLoc.y);
-
+			j+=1;
 		// console.log("xCells["+i+"]: "+xCells[i] + " | yCells["+i+"]: " + yCells[i]);
 			if (j < c) {
 				curLoc.x += cellX;
 				// console.log("NEXT CELL");
-				j+=1;
 			}
 			else if (j == c) {
 				curLoc.x = 0; 
